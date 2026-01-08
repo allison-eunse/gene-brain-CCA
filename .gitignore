@@ -1,0 +1,10 @@
+derived/
+logs/
+*.npy
+*.npz
+*.memmap
+*.log
+__pycache__/
+.DS_Store
+
+
