@@ -17,6 +17,7 @@ Outputs (to --out-dir):
   ids_common.npy
   X_gene_pca{kg}.npy   where kg = min(pca_dim, gene_in_dim)
   X_fmri_pca{kb}.npy   where kb = min(pca_dim, fmri_in_dim)
+  labels_common.npy    (if --labels provided)
   pca_info.json
 """
 
@@ -101,6 +102,7 @@ def main():
     ap.add_argument("--cov-valid-mask", default=None, help="Optional valid mask npy (1D bool/int)")
 
     ap.add_argument("--pca-dim", type=int, default=512)
+    ap.add_argument("--labels", default=None, help="Optional: labels.npy to subset and save as labels_common.npy")
     ap.add_argument("--out-dir", required=True)
     args = ap.parse_args()
 
@@ -162,6 +164,15 @@ def main():
     np.save(out_dir / "ids_common.npy", kept)
     np.save(out_dir / f"X_gene_pca{kg}.npy", Xg_p)
     np.save(out_dir / f"X_fmri_pca{kb}.npy", Xb_p)
+
+    # Save aligned labels if provided
+    if args.labels:
+        labels_full = np.load(args.labels)
+        # Build label lookup from cov_iids (labels are aligned to cov_iids)
+        label_idx = {sid: i for i, sid in enumerate(cov_iids)}
+        labels_common = np.array([labels_full[label_idx[sid]] for sid in kept.astype(str)])
+        np.save(out_dir / "labels_common.npy", labels_common)
+        print(f"[save] labels_common.npy: {labels_common.shape}", flush=True)
 
     info = {
         "n_common": int(len(kept)),

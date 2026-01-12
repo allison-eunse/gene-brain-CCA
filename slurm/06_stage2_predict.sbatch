@@ -4,6 +4,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=04:00:00
+#SBATCH --nodelist=node2
 #SBATCH -o logs/%x_%j.out
 #SBATCH -e logs/%x_%j.err
 
@@ -25,9 +26,9 @@ set -euo pipefail
 # Requires: scikit-learn
 # =============================================================================
 
-# Adjust these paths on the lab server
-NESAP="/path/to/nesap-genomics-allison"
-LABELS="$NESAP/iids_labels_covariates/labels.npy"  # MDD labels (0/1)
+# Use aligned labels from align_resid_pca.py output
+ALIGNED="$PWD/derived/aligned_pca"
+LABELS="$ALIGNED/labels_common.npy"  # MDD labels (0/1) aligned to CCA subjects
 
 # Run for both CCA and SCCA
 CCA_DIR="$PWD/derived/cca_stage1"
@@ -43,8 +44,16 @@ MLP_HIDDEN="64,32"
 
 mkdir -p logs "$CCA_OUT" "$SCCA_OUT"
 
+# Auto-create conda environment if it doesn't exist
 source ~/.bashrc || true
-conda activate <YOUR_ENV>
+if ! conda env list | grep -q "^cca_env "; then
+    echo "[setup] Creating cca_env..."
+    conda create -n cca_env python=3.10 numpy scipy scikit-learn -y
+    conda activate cca_env
+    pip install cca-zoo
+else
+    conda activate cca_env
+fi
 
 echo "[$(date)] Starting Stage 2 Clinical Prediction"
 
@@ -136,5 +145,6 @@ PYTHON
 
 echo ""
 echo "[$(date)] Stage 2 complete"
+
 
 

@@ -3,20 +3,23 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
-#SBATCH --time=24:00:00
+#SBATCH --time=48:00:00
+#SBATCH --nodelist=node2
 #SBATCH -o logs/%x_%j.out
 #SBATCH -e logs/%x_%j.err
 
 set -euo pipefail
 
 # =============================================================================
-# Full Two-Stage CCA Pipeline: Conventional vs Sparse CCA Comparison
+# Full End-to-End CCA Pipeline: Gene Build → Align → CCA/SCCA → Prediction
 # =============================================================================
-# This script runs the complete pipeline:
-#   1. Stage 1a: Conventional CCA → canonical variates
-#   2. Stage 1b: Sparse CCA → sparse canonical variates
-#   3. Stage 2:  Clinical prediction (LogReg + MLP) for both
-#   4. Comparison and interpretation
+# This script runs the COMPLETE pipeline from scratch:
+#   Step 0: Build gene features from DNABERT2 embeddings
+#   Step 1: Align gene/fMRI subjects, residualize, PCA, create labels_common
+#   Stage 1a: Conventional CCA → canonical variates
+#   Stage 1b: Sparse CCA → sparse canonical variates
+#   Stage 2:  Clinical prediction (LogReg + MLP) for both
+#   Comparison and interpretation
 #
 # The goal is to determine whether the gene-brain relationship for your
 # clinical trait (e.g., MDD) is driven by:
@@ -24,12 +27,19 @@ set -euo pipefail
 #   - LOCALIZED patterns (SCCA wins) - like a directional microphone
 # =============================================================================
 
-# Adjust these paths on the lab server
-NESAP="/path/to/nesap-genomics-allison"
-ALIGNED="$PWD/derived/aligned_pca"
-LABELS="$NESAP/iids_labels_covariates/labels.npy"
+# =============================================================================
+# PATHS (adjust if needed)
+# =============================================================================
+NESAP="/storage/bigdata/UKB/fMRI/nesap-genomics-allison"
+FMRI_IDS="/storage/bigdata/UKB/fMRI/fmri_eids_180.npy"
+FMRI_X="/storage/bigdata/UKB/fMRI/fmri_X_180.npy"
 
-# Output directories
+# Derived outputs
+GENE_DIR="$PWD/derived/gene_x"
+ALIGNED="$PWD/derived/aligned_pca"
+LABELS="$ALIGNED/labels_common.npy"
+
+# Stage 1/2 output directories
 CCA_OUT="$PWD/derived/cca_stage1"
 SCCA_OUT="$PWD/derived/scca_stage1"
 PRED_CCA="$PWD/derived/stage2_cca"
@@ -43,25 +53,82 @@ C1=0.3
 C2=0.3
 N_FOLDS=5
 SEED=42
+REDUCE_METHOD="mean"  # mean, max, or median for gene embedding reduction
 
-mkdir -p logs "$CCA_OUT" "$SCCA_OUT" "$PRED_CCA" "$PRED_SCCA" "$COMPARE_OUT"
+mkdir -p logs "$GENE_DIR" "$ALIGNED" "$CCA_OUT" "$SCCA_OUT" "$PRED_CCA" "$PRED_SCCA" "$COMPARE_OUT"
 
+# =============================================================================
+# CONDA ENVIRONMENT SETUP
+# =============================================================================
 source ~/.bashrc || true
-conda activate <YOUR_ENV>
+if ! conda env list | grep -q "^cca_env "; then
+    echo "[setup] Creating cca_env..."
+    conda create -n cca_env python=3.10 numpy scipy scikit-learn -y
+    conda activate cca_env
+    pip install cca-zoo
+else
+    conda activate cca_env
+fi
 
+echo "============================================================"
+echo "Full End-to-End CCA Pipeline"
+echo "============================================================"
+echo "Started: $(date)"
+echo ""
+
+# =============================================================================
+# STEP 0: BUILD GENE FEATURES (skip if already exists)
+# =============================================================================
+if [[ -f "$GENE_DIR/X_gene_ng.npy" && -f "$GENE_DIR/ids_gene.npy" ]]; then
+    echo "[step0] Gene features already exist, skipping..."
+else
+    echo ">>> STEP 0: Building gene features from DNABERT2 embeddings <<<"
+    python scripts/build_x_gene.py \
+      --embed-root "$NESAP/DNABERT2_embedding_merged" \
+      --gene-list "$NESAP/iids_labels_covariates/gene_list_filtered.txt" \
+      --iids "$NESAP/iids_labels_covariates/iids.npy" \
+      --n-files 49 \
+      --reduce "$REDUCE_METHOD" \
+      --out-dir "$GENE_DIR"
+    echo "[step0] Gene features built: $GENE_DIR"
+fi
+echo ""
+
+# =============================================================================
+# STEP 1: ALIGN + RESIDUALIZE + PCA + LABELS (skip if already exists)
+# =============================================================================
+if [[ -f "$ALIGNED/pca_info.json" && -f "$ALIGNED/labels_common.npy" ]]; then
+    echo "[step1] Aligned data already exists, skipping..."
+else
+    echo ">>> STEP 1: Aligning subjects, residualizing, PCA, creating labels_common <<<"
+    python scripts/align_resid_pca.py \
+      --ids-gene "$GENE_DIR/ids_gene.npy" \
+      --x-gene "$GENE_DIR/X_gene_ng.npy" \
+      --ids-fmri "$FMRI_IDS" \
+      --x-fmri "$FMRI_X" \
+      --cov-iids "$NESAP/iids_labels_covariates/iids.npy" \
+      --cov-age "$NESAP/iids_labels_covariates/covariates_age.npy" \
+      --cov-sex "$NESAP/iids_labels_covariates/covariates_sex.npy" \
+      --cov-valid-mask "$NESAP/iids_labels_covariates/covariates_valid_mask.npy" \
+      --labels "$NESAP/iids_labels_covariates/labels.npy" \
+      --pca-dim 512 \
+      --out-dir "$ALIGNED"
+    echo "[step1] Aligned data created: $ALIGNED"
+fi
+echo ""
+
+# =============================================================================
+# READ PCA DIMENSIONS FROM pca_info.json
+# =============================================================================
 INFO_JSON="$ALIGNED/pca_info.json"
 GENE_PCA_DIM="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['gene_pca_dim'])" "$INFO_JSON")"
 FMRI_PCA_DIM="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['fmri_pca_dim'])" "$INFO_JSON")"
 X_GENE="$ALIGNED/X_gene_pca${GENE_PCA_DIM}.npy"
 X_FMRI="$ALIGNED/X_fmri_pca${FMRI_PCA_DIM}.npy"
 
-echo "============================================================"
-echo "Two-Stage CCA Pipeline: Conventional vs Sparse CCA"
-echo "============================================================"
-echo "Started: $(date)"
-echo ""
-echo "[info] X_gene: $X_GENE"
-echo "[info] X_fmri: $X_FMRI"
+echo "[info] X_gene: $X_GENE (dim=$GENE_PCA_DIM)"
+echo "[info] X_fmri: $X_FMRI (dim=$FMRI_PCA_DIM)"
+echo "[info] Labels: $LABELS"
 echo ""
 
 # =============================================================================
