@@ -58,17 +58,14 @@ REDUCE_METHOD="mean"  # mean, max, or median for gene embedding reduction
 mkdir -p logs "$GENE_DIR" "$ALIGNED" "$CCA_OUT" "$SCCA_OUT" "$PRED_CCA" "$PRED_SCCA" "$COMPARE_OUT"
 
 # =============================================================================
-# CONDA ENVIRONMENT SETUP
+# ENVIRONMENT SETUP
 # =============================================================================
+# Assumes `cca_env` already exists and has dependencies installed:
+#   conda create -n cca_env python=3.10 -y
+#   conda activate cca_env
+#   pip install numpy scipy scikit-learn cca-zoo
 source ~/.bashrc || true
-if ! conda env list | grep -q "^cca_env "; then
-    echo "[setup] Creating cca_env..."
-    conda create -n cca_env python=3.10 numpy scipy scikit-learn -y
-    conda activate cca_env
-    pip install cca-zoo
-else
-    conda activate cca_env
-fi
+conda activate cca_env
 
 echo "============================================================"
 echo "Full End-to-End CCA Pipeline"
