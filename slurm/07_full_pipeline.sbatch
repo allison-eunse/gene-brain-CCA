@@ -8,7 +8,7 @@
 #SBATCH -o logs/%x_%j.out
 #SBATCH -e logs/%x_%j.err
 
-set -euo pipefail
+set -eo pipefail
 
 # =============================================================================
 # Full End-to-End CCA Pipeline: Gene Build → Align → CCA/SCCA → Prediction
@@ -62,10 +62,10 @@ mkdir -p logs "$GENE_DIR" "$ALIGNED" "$CCA_OUT" "$SCCA_OUT" "$PRED_CCA" "$PRED_S
 # =============================================================================
 # Assumes `cca_env` already exists and has dependencies installed:
 #   conda create -n cca_env python=3.10 -y
-#   conda activate cca_env
+#   conda activate /scratch/connectome/allie/envs/cca_env
 #   pip install numpy scipy scikit-learn cca-zoo
-source ~/.bashrc || true
-conda activate cca_env
+source /usr/anaconda3/etc/profile.d/conda.sh
+conda activate /scratch/connectome/allie/envs/cca_env
 
 echo "============================================================"
 echo "Full End-to-End CCA Pipeline"

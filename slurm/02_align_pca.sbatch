@@ -8,7 +8,7 @@
 #SBATCH -o logs/%x_%j.out
 #SBATCH -e logs/%x_%j.err
 
-set -euo pipefail
+set -eo pipefail
 
 # Adjust these on the lab server
 NESAP="/storage/bigdata/UKB/fMRI/nesap-genomics-allison"
@@ -25,14 +25,14 @@ OUT_DIR="$PWD/derived/aligned_pca"
 mkdir -p logs "$OUT_DIR"
 
 # Auto-create conda environment if it doesn't exist
-source ~/.bashrc || true
+source /usr/anaconda3/etc/profile.d/conda.sh
 if ! conda env list | grep -q "^cca_env "; then
     echo "[setup] Creating cca_env..."
     conda create -n cca_env python=3.10 numpy scipy scikit-learn -y
-    conda activate cca_env
+    conda activate /scratch/connectome/allie/envs/cca_env
     pip install cca-zoo
 else
-    conda activate cca_env
+    conda activate /scratch/connectome/allie/envs/cca_env
 fi
 
 python scripts/align_resid_pca.py \
