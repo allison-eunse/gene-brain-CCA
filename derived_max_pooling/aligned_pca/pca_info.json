@@ -1,0 +1,13 @@
+{
+  "n_common": 4218,
+  "gene_in_dim": 111,
+  "fmri_in_dim": 180,
+  "gene_pca_dim": 111,
+  "fmri_pca_dim": 180,
+  "covariates": [
+    "intercept",
+    "age",
+    "sex"
+  ],
+  "used_valid_mask": true
+}

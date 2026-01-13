@@ -53,7 +53,7 @@ C1=0.3
 C2=0.3
 N_FOLDS=5
 SEED=42
-REDUCE_METHOD="mean"  # mean, max, or median for gene embedding reduction
+REDUCE_METHOD="max"  # mean, max, or median for gene embedding reduction
 
 mkdir -p logs "$GENE_DIR" "$ALIGNED" "$CCA_OUT" "$SCCA_OUT" "$PRED_CCA" "$PRED_SCCA" "$COMPARE_OUT"
 
