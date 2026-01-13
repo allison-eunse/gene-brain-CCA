@@ -1,4 +1,3 @@
-derived/
 logs/
 *.npy
 *.npz
@@ -7,4 +6,8 @@ logs/
 __pycache__/
 .DS_Store
 
-
+# Allow committing derived outputs (even though they are .npy/.npz)
+!derived/**
+!derived/**/*.npy
+!derived/**/*.npz
+!derived/**/*.memmap
