@@ -6,12 +6,22 @@ logs/
 __pycache__/
 .DS_Store
 
+# Pip installation artifacts
+=*
+
 # Allow committing derived outputs (even though they are .npy/.npz)
 !derived_max_pooling/**
 !derived_max_pooling/**/*.npy
 !derived_max_pooling/**/*.npz
 !derived_max_pooling/**/*.memmap
-!derived_min_pooling/**
-!derived_min_pooling/**/*.npy
-!derived_min_pooling/**/*.npz
-!derived_min_pooling/**/*.memmap
+!derived_mean_pooling/**
+!derived_mean_pooling/**/*.npy
+!derived_mean_pooling/**/*.npz
+!derived_mean_pooling/**/*.memmap
+
+# gene-brain-cca-2: allow scripts, docs, and JSON results, but exclude large data files
+gene-brain-cca-2/derived/**/*.npy
+gene-brain-cca-2/derived/**/*.npz
+
+# final_report: allow all (PDFs, markdown, Python scripts)
+!final_report/**

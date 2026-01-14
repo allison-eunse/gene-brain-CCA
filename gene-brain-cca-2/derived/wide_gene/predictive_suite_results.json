@@ -1,0 +1,105 @@
+{
+  "split": {
+    "n_total": 4218,
+    "n_train": 3374,
+    "n_holdout": 844,
+    "pos_ratio_total": 0.4113323850165955,
+    "pos_ratio_train": 0.41138114997036157,
+    "pos_ratio_holdout": 0.41113744075829384,
+    "seed": 42,
+    "holdout_frac": 0.2
+  },
+  "pca": {
+    "n_components": 512,
+    "explained_variance_ratio_sum": 0.9176345467567444
+  },
+  "warnings": [],
+  "cv": {
+    "gene_only_logreg": {
+      "auc": 0.7243028287348617,
+      "ap": 0.5635115970636835
+    },
+    "gene_only_mlp": {
+      "auc": 0.685939363730552,
+      "ap": 0.5411554018869182
+    },
+    "fmri_only_logreg": {
+      "auc": 0.5086564162393237,
+      "ap": 0.4136634118899565
+    },
+    "fmri_only_mlp": {
+      "auc": 0.5005838782137788,
+      "ap": 0.41194475330297603
+    },
+    "early_fusion_logreg": {
+      "auc": 0.7248984969715967,
+      "ap": 0.5663719228303519
+    },
+    "early_fusion_mlp": {
+      "auc": 0.6716511256025609,
+      "ap": 0.5411379569223472
+    },
+    "cca_joint_logreg": {
+      "auc": 0.5338177763073503,
+      "ap": 0.43451980016632535
+    },
+    "cca_joint_mlp": {
+      "auc": 0.5261100034535697,
+      "ap": 0.4341174943051448
+    },
+    "scca_joint_logreg": {
+      "auc": 0.5422779340106973,
+      "ap": 0.44164777688890194
+    },
+    "scca_joint_mlp": {
+      "auc": 0.5426526753557323,
+      "ap": 0.4448252269787366
+    }
+  },
+  "holdout": {
+    "gene_only_logreg": {
+      "auc": 0.7591949390869714,
+      "ap": 0.5960892784843602
+    },
+    "gene_only_mlp": {
+      "auc": 0.7507291588145588,
+      "ap": 0.6228332957192494
+    },
+    "fmri_only_logreg": {
+      "auc": 0.5593387413820097,
+      "ap": 0.4531136378676749
+    },
+    "fmri_only_mlp": {
+      "auc": 0.543329139099728,
+      "ap": 0.462296185241398
+    },
+    "early_fusion_logreg": {
+      "auc": 0.7624362892049705,
+      "ap": 0.6028571727200946
+    },
+    "early_fusion_mlp": {
+      "auc": 0.7104529192445741,
+      "ap": 0.56049147590013
+    },
+    "cca_joint_logreg": {
+      "auc": 0.5458398807832586,
+      "ap": 0.45435790447930624
+    },
+    "cca_joint_mlp": {
+      "auc": 0.5301665903200181,
+      "ap": 0.45394850697971334
+    },
+    "scca_joint_logreg": {
+      "auc": 0.5664476774189807,
+      "ap": 0.47982376270355925
+    },
+    "scca_joint_mlp": {
+      "auc": 0.519735125450107,
+      "ap": 0.42514490890513923
+    }
+  },
+  "artifacts": {
+    "train_ids": "predictive_suite_results_train_ids.npy",
+    "holdout_ids": "predictive_suite_results_holdout_ids.npy"
+  }
+}
