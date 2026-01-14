@@ -4,6 +4,43 @@ All notable changes to the gene-brain-cca-2 pipeline will be documented in this 
 
 ---
 
+## [1.1.0] - 2026-01-14
+
+### Added - Results Documentation
+
+**Documentation Updates:**
+- Updated `README.md` with comprehensive results summary and key findings
+- Added Executive Summary table with AUC comparisons
+- Added Pipeline A and B actual results interpretation
+- Added Scientific Conclusions section explaining:
+  - Why fMRI failed (diffuse signal, noise, feature mismatch)
+  - Why CCA/SCCA underperformed (objective mismatch)
+  - Recommendations for future work
+- Added comparison to Yoon et al. baseline study
+
+**RESULTS_GUIDE.md Updates:**
+- Replaced example results with actual study results
+- Fixed Q&A examples to reflect gene >> fMRI finding
+- Updated example summary statement with actual conclusions
+
+**Main README.md Updates:**
+- Added project structure diagram showing Experiment 1 and 2
+- Added cohort overview with N=4,218 overlap statistics
+- Added data representations table
+- Added comparison to Yoon et al.
+- Added future directions section
+
+### Key Findings Documented
+
+| Finding | Evidence |
+|---------|----------|
+| Full embeddings >> scalar | AUC 0.762 vs 0.588 (+29%) |
+| Gene >> fMRI | AUC 0.759 vs 0.559 (+36%) |
+| CCA/SCCA hurts prediction | AUC 0.55 vs 0.76 |
+| Gene-brain coupling diffuse | Sparsity < 10% |
+
+---
+
 ## [1.0.0] - 2026-01-13
 
 ### Added - Initial Release

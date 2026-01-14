@@ -181,22 +181,26 @@ print(f"Positive rate: {pos_rate:.2%}")
 
 ### Model Comparisons
 
-**Example results:**
+**Actual results from this study (holdout N=844):**
 ```json
 {
-  "gene_only_logreg": {"auc": 0.58, "ap": 0.54},
-  "fmri_only_logreg": {"auc": 0.73, "ap": 0.69},
-  "early_fusion_logreg": {"auc": 0.75, "ap": 0.71},
-  "cca_joint_logreg": {"auc": 0.74, "ap": 0.70},
-  "scca_joint_logreg": {"auc": 0.72, "ap": 0.68},
-  
-  "gene_only_mlp": {"auc": 0.61, "ap": 0.57},
-  "fmri_only_mlp": {"auc": 0.75, "ap": 0.72},
-  "early_fusion_mlp": {"auc": 0.77, "ap": 0.74},
-  "cca_joint_mlp": {"auc": 0.76, "ap": 0.73},
-  "scca_joint_mlp": {"auc": 0.74, "ap": 0.71}
+  "gene_only_logreg": {"auc": 0.759, "ap": 0.596},
+  "gene_only_mlp": {"auc": 0.751, "ap": 0.623},
+  "fmri_only_logreg": {"auc": 0.559, "ap": 0.453},
+  "fmri_only_mlp": {"auc": 0.543, "ap": 0.462},
+  "early_fusion_logreg": {"auc": 0.762, "ap": 0.603},
+  "early_fusion_mlp": {"auc": 0.710, "ap": 0.560},
+  "cca_joint_logreg": {"auc": 0.546, "ap": 0.454},
+  "cca_joint_mlp": {"auc": 0.530, "ap": 0.454},
+  "scca_joint_logreg": {"auc": 0.566, "ap": 0.480},
+  "scca_joint_mlp": {"auc": 0.520, "ap": 0.425}
 }
 ```
+
+**Key findings:**
+- **Gene >> fMRI**: 0.759 vs 0.559 (genetics vastly outperforms brain imaging)
+- **CCA/SCCA hurts**: 0.55 vs 0.76 (unsupervised reduces performance)
+- **Fusion marginal**: 0.762 vs 0.759 (fMRI adds only +0.003)
 
 ---
 
@@ -207,12 +211,14 @@ print(f"Positive rate: {pos_rate:.2%}")
 **Compare:**
 - `gene_only_logreg` vs `fmri_only_logreg`
 
-**Example:**
+**Actual results:**
 ```
-Gene-only: AUC=0.58
-fMRI-only: AUC=0.73
+Gene-only: AUC=0.759
+fMRI-only: AUC=0.559
 ```
-→ **Brain data is more predictive** (0.73 vs 0.58 = 26% relative improvement)
+→ **Gene data is MUCH more predictive** (0.759 vs 0.559 = 36% relative improvement)
+
+**Interpretation:** For MDD prediction, foundation model gene embeddings vastly outperform brain functional connectivity. This aligns with Yoon et al.'s findings that genetic features are strong MDD predictors.
 
 ---
 
@@ -221,42 +227,41 @@ fMRI-only: AUC=0.73
 **Compare:**
 - Best single modality vs `early_fusion_logreg`
 
-**Example:**
+**Actual results:**
 ```
-fMRI-only: AUC=0.73
-Early fusion: AUC=0.75
+Gene-only: AUC=0.759
+Early fusion: AUC=0.762
 ```
-→ **Modest improvement** (0.73 → 0.75 = +2.7% absolute)
+→ **Negligible improvement** (0.759 → 0.762 = +0.003 absolute)
 
 **Interpretation:**
 - Large gain (> 5%): Modalities are complementary
 - Small gain (1-3%): Modalities overlap in information
-- No gain or loss: Features are redundant or gene data adds noise
+- **No gain (< 1%):** Features are redundant; fMRI adds no value beyond genetics
+
+**This study found:** fMRI provides essentially no additional predictive value for MDD when combined with genetic embeddings.
 
 ---
 
 #### Q3: Does CCA/SCCA add value?
 
 **Compare:**
-- `early_fusion_logreg` vs `cca_joint_logreg` vs `scca_joint_logreg`
+- `gene_only_logreg` vs `cca_joint_logreg` vs `scca_joint_logreg`
 
-**Example:**
+**Actual results:**
 ```
-Early fusion: AUC=0.75
-CCA joint: AUC=0.74
-SCCA joint: AUC=0.72
+Gene-only (direct): AUC=0.759
+CCA joint: AUC=0.546
+SCCA joint: AUC=0.566
 ```
-→ **CCA/SCCA don't improve** over simple concatenation
+→ **CCA/SCCA dramatically HURT performance** (-0.19 to -0.21 absolute)
 
-**Possible reasons:**
-1. CCA finds correlations, not predictive patterns
-2. Supervised early fusion already captures relevant info
-3. CCA dimensionality reduction (k=10) loses information
+**Why CCA/SCCA failed in this study:**
+1. **Objective mismatch:** CCA optimizes gene-brain correlation, NOT MDD prediction
+2. **Information loss:** Reducing to 10 canonical variates loses predictive signal
+3. **fMRI is noise:** Brain features are near chance-level, so finding gene-brain correlation finds non-predictive patterns
 
-**When CCA helps:**
-- High-dimensional, noisy features
-- Strong shared structure between modalities
-- Limited training data (CCA reduces overfitting)
+**Key insight:** Unsupervised dimensionality reduction (CCA) does NOT align with supervised prediction objectives. Direct supervised learning vastly outperforms the two-stage approach.
 
 ---
 
@@ -473,19 +478,19 @@ plt.savefig('scca_component1.png', dpi=150)
 
 ---
 
-### Pattern 3: Gene-Only Outperforms Early Fusion
+### Pattern 3: Gene-Only Matches or Outperforms Early Fusion (THIS STUDY)
 
-**Observation:**
+**Actual observation:**
 ```json
-"gene_only_logreg": {"auc": 0.78},
-"early_fusion_logreg": {"auc": 0.74}
+"gene_only_logreg": {"auc": 0.759},
+"early_fusion_logreg": {"auc": 0.762}
 ```
 
 **Meaning:**
-- Brain features add noise or misleading patterns
-- Model overfits on irrelevant brain-gene interactions
-- **Possible cause:** Brain data not truly predictive of this label
-- **Action:** Use gene-only model; investigate why brain doesn't help
+- Brain features add almost no information (+0.003)
+- fMRI may add noise or redundant patterns
+- **This study's cause:** fMRI is near chance-level (0.559), so it contributes nothing
+- **Action:** Use gene-only model for MDD prediction; fMRI fusion is not beneficial
 
 ---
 
@@ -550,12 +555,14 @@ When presenting results, include:
 
 ## Example Summary Statement
 
-> We analyzed 4,218 subjects with both genomic (111 genes) and fMRI (180 ROIs) data. 
+> We analyzed 4,218 subjects with both genomic (111 genes × 768-D DNABERT-2 embeddings) and fMRI (180 ROIs, HCP-MMP1) data for Major Depressive Disorder (MDD) prediction.
 > 
-> **Interpretable SCCA (Pipeline A):** The top canonical component showed moderate gene-brain correlation (r=0.34, 95% CI [0.31-0.37] across folds), with high sparsity (73% genes, 82% ROIs zeroed), suggesting a focused set of 30 genes and 32 ROIs drive the association.
+> **Interpretable SCCA (Pipeline A):** The top canonical component showed weak gene-brain correlation (r=0.156 train, r=-0.005 holdout), with low sparsity (8% genes, 2% ROIs zeroed), indicating the coupling pattern does NOT generalize and the relationship is diffuse rather than localized.
 > 
-> **Predictive modeling (Pipeline B):** fMRI features (AUC=0.73) outperformed gene features (AUC=0.58) for predicting [label]. Early fusion yielded marginal improvement (AUC=0.75), while CCA/SCCA did not improve over concatenation. This suggests brain and genetic data provide largely overlapping information for this task.
+> **Predictive modeling (Pipeline B):** Gene features (AUC=0.759) dramatically outperformed fMRI features (AUC=0.559) for MDD prediction. Early fusion yielded negligible improvement (AUC=0.762, +0.003). CCA/SCCA joint models performed poorly (AUC=0.55), demonstrating that unsupervised gene-brain alignment does NOT translate to clinical prediction power.
+> 
+> **Core conclusion:** Foundation model gene embeddings are highly predictive of MDD; brain functional connectivity adds no value. Direct supervised learning vastly outperforms two-stage unsupervised approaches.
 
 ---
 
-**Last updated:** January 2026
+**Last updated:** January 14, 2026

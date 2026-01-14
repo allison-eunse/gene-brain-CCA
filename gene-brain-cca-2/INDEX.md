@@ -4,6 +4,19 @@ Quick reference to all documentation and resources in this folder.
 
 ---
 
+## 🔬 Quick Results Summary
+
+| Model | Holdout AUC | Key Finding |
+|-------|-------------|-------------|
+| **gene_only_logreg** | **0.759** 🏆 | Genetics dominates |
+| early_fusion_logreg | 0.762 | +0.003 (negligible) |
+| fmri_only_logreg | 0.559 | Near chance level |
+| cca_joint_logreg | 0.546 | CCA hurts prediction |
+
+**Core insight:** Direct supervised learning on full gene embeddings >> unsupervised CCA/SCCA.
+
+---
+
 ## 📚 Documentation Files
 
 ### Getting Started
@@ -196,4 +209,4 @@ gene-brain-cca-2/
 
 ---
 
-**Last updated:** January 2026
+**Last updated:** January 14, 2026
