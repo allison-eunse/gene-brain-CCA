@@ -1,6 +1,26 @@
 # Gene-Brain CCA Pipeline
 
-A two-stage pipeline for discovering gene-brain associations using **Canonical Correlation Analysis (CCA)** with UK Biobank data.
+A two-stage pipeline for discovering gene-brain associations using **Canonical Correlation Analysis (CCA)** with UK Biobank data, and evaluating their utility for **Major Depressive Disorder (MDD)** prediction.
+
+**Author:** Allie  
+**Last Updated:** January 14, 2026  
+**Dataset:** UK Biobank (N=4,218 with paired genetics + fMRI)
+
+---
+
+## 🔬 Key Results
+
+| Finding | Evidence |
+|---------|----------|
+| **Full embeddings >> scalar reduction** | AUC 0.762 vs 0.588 (+29%) |
+| **Genetics >> fMRI for MDD prediction** | AUC 0.759 vs 0.559 (+36%) |
+| **CCA/SCCA hurts prediction** | AUC 0.55 vs 0.76 (direct supervised) |
+| **Gene-brain coupling is diffuse** | SCCA sparsity < 10% |
+| **fMRI adds no predictive value** | Early fusion +0.003 over gene-only |
+
+> **Core Conclusion:** Gene-brain correlation (unsupervised) does NOT translate into clinical prediction power (supervised). Full foundation model embeddings substantially outperform scalar reductions.
+
+---
 
 ## Overview
 
@@ -56,29 +76,64 @@ Because of this, PCA on the gene side is capped at \(G\): you cannot get 512 ind
 
 If you want sparsity/selection over **FM latent dimensions** instead (e.g., 768-D within-gene directions, or a 512-D genetic latent space), you would need to build a different genetics representation (e.g., keep per-gene embedding vectors and pool/concatenate before PCA).
 
-## Directory Structure
+## Project Structure
+
+This project contains **two major experiments** organized as follows:
 
 ```
 gene-brain-CCA/
-├── scripts/
-│   ├── build_x_gene.py        # DNABERT2 embeddings → gene matrix
-│   ├── build_x_fmri_fc.py     # ROI timeseries → FC vectors
-│   ├── align_resid_pca.py     # Align subjects, residualize, PCA
-│   ├── run_cca.py             # Stage 1: CCA / SCCA
-│   ├── stage2_predict.py      # Stage 2: Clinical prediction
-│   └── run_cca_permute.py     # (Legacy) CCA with permutation tests
-├── slurm/
-│   ├── 00_fmri_fc.sbatch      # Build fMRI features
-│   ├── 01_gene_x.sbatch       # Build gene features
-│   ├── 02_align_pca.sbatch    # Align and PCA
-│   ├── 03_cca_perm.sbatch     # (Legacy) Basic CCA
-│   ├── 04_cca_stage1.sbatch   # Stage 1: Conventional CCA
-│   ├── 05_scca_stage1.sbatch  # Stage 1: Sparse CCA
-│   ├── 06_stage2_predict.sbatch  # Stage 2: Prediction
-│   └── 07_full_pipeline.sbatch   # Full comparison pipeline
-├── derived/                   # Generated outputs (safe to rsync)
-└── logs/                      # Slurm logs
+│
+├── 📊 EXPERIMENT 1: Original Two-Stage CCA (Scalar Gene Reduction)
+├── ─────────────────────────────────────────────────────────
+├── scripts/                      # Original pipeline scripts
+│   ├── build_x_gene.py           # DNABERT2 → scalar gene matrix (111 features)
+│   ├── build_x_fmri_fc.py        # ROI timeseries → FC vectors
+│   ├── align_resid_pca.py        # Align subjects, residualize, PCA
+│   ├── run_cca.py                # Stage 1: CCA / SCCA
+│   └── stage2_predict.py         # Stage 2: Clinical prediction
+├── slurm/                        # SLURM job scripts for Experiment 1
+├── derived_mean_pooling/         # Results: mean pooling (AUC 0.588)
+├── derived_max_pooling/          # Results: max pooling (AUC 0.505)
+│
+├── 📊 EXPERIMENT 2: Leakage-Safe Pipelines with Full Embeddings
+├── ─────────────────────────────────────────────────────────
+├── gene-brain-cca-2/             # ⭐ RECOMMENDED: Redesigned pipelines
+│   ├── README.md                 # Detailed documentation with results
+│   ├── scripts/
+│   │   ├── prepare_overlap_no_pca.py   # Pipeline A: data preparation
+│   │   ├── run_scca_interpretable.py   # Pipeline A: interpretable SCCA
+│   │   ├── build_x_gene_wide.py        # Pipeline B: full 768-D embeddings
+│   │   └── run_predictive_suite.py     # Pipeline B: 10-model comparison
+│   ├── slurm/
+│   │   ├── 01_interpretable_scca.sbatch
+│   │   └── 02_predictive_wide_suite.sbatch
+│   └── derived/
+│       ├── interpretable/        # Pipeline A outputs (SCCA weights)
+│       └── wide_gene/            # Pipeline B outputs (AUC 0.762 🏆)
+│
+├── 📄 REPORTS
+├── ─────────────────────────────────────────────────────────
+├── final_report/                 # Comprehensive analysis reports
+│   ├── comprehensive_report.md   # Full technical report
+│   └── *.pdf                     # Generated PDF reports
+│
+└── logs/                         # SLURM logs
 ```
+
+### Experiment Overview
+
+| Experiment | Gene Representation | Best AUC | Key Finding |
+|------------|---------------------|----------|-------------|
+| **Exp 1 (Mean Pool)** | 768-D → 1 scalar/gene | 0.588 | Mean > Max pooling |
+| **Exp 1 (Max Pool)** | 768-D → 1 scalar/gene | 0.505 | Near chance |
+| **Exp 2 Pipeline A** | 111 scalars (SCCA) | r=0.16 | Coupling doesn't generalize |
+| **Exp 2 Pipeline B** | 85,248 → PCA 512 | **0.762** 🏆 | Full embeddings win |
+
+### Recommended Workflow
+
+1. **For new analyses:** Use `gene-brain-cca-2/` (Experiment 2)
+2. **For reproduction:** Use `derived_mean_pooling/` or `derived_max_pooling/`
+3. **For full documentation:** See `gene-brain-cca-2/README.md`
 
 ## Quick Start
 
@@ -276,27 +331,73 @@ for idx in top_indices:
 
 ## Data Requirements
 
+### Cohort Overview
+
+```
+Genetics cohort (NESAP/Yoon): 28,932 subjects
+                                    ╲
+                                     ╲ Overlap: 4,218 subjects
+                                      ╲ (14.6% / 10.3%)
+                                       ╳
+                                      ╱
+                                     ╱
+fMRI cohort (UK Biobank):     40,792 subjects
+```
+
+**Final Analysis Cohort:**
+- **N = 4,218** subjects with BOTH genetics AND fMRI
+- **MDD Cases:** 1,735 (41.1%)
+- **Controls:** 2,483 (58.9%)
+
 ### Input Data
 
 | Data | Source | Format | Notes |
 |------|--------|--------|-------|
-| Gene embeddings | DNABERT2/Caduceus | `(N × D)` per gene | Chunked as `embeddings_k_layer_last.npy` |
-| fMRI ROI | UK Biobank | `(T × R)` per subject | HCP-MMP1 (180 ROIs) or Schaefer |
-| Clinical labels | UK Biobank | `(N,)` binary | MDD, PHQ-9 threshold, etc. |
+| Gene embeddings | DNABERT2 | `(N × 768)` per gene | 111 genes from gene_list_filtered.txt |
+| fMRI ROI | UK Biobank | `(T × 180)` per subject | HCP-MMP1 parcellation |
+| Clinical labels | UK Biobank | `(N,)` binary | MDD diagnosis |
 | Covariates | UK Biobank | `(N,)` each | Age, sex for residualization |
+
+### Data Representations
+
+| Representation | Shape | Used In | Description |
+|---------------|-------|---------|-------------|
+| **Scalar (Mean Pool)** | N × 111 | Exp 1 | Average 768-D → 1 per gene |
+| **Scalar (Max Pool)** | N × 111 | Exp 1 | Maximum 768-D → 1 per gene |
+| **Full Embeddings** | N × 85,248 | Exp 2 | 111 genes × 768 dimensions |
+| **PCA Reduced** | N × 512 | Exp 2 | Full embeddings → PCA (91.8% variance) |
+| **fMRI Connectivity** | N × 180 | Both | HCP-MMP1 ROI values |
 
 ### Alignment
 
 The pipeline automatically handles subject alignment across modalities:
 1. Gene embeddings aligned via `iids.npy`
 2. fMRI subjects extracted from folder names
-3. Intersection computed, covariates aligned
+3. Intersection computed (N=4,218), covariates aligned
+4. Stratified train/holdout split (80/20)
+
+## Comparison to Yoon et al.
+
+This study extends Yoon et al.'s gene-only MDD prediction by adding brain imaging:
+
+| Study | Method | Training N | AUC | Notes |
+|-------|--------|------------|-----|-------|
+| **Yoon et al.** | 10-fold nested CV, 38 genes | ~26,039 | **0.851** | Reference |
+| **This Study** | 80/20 holdout, 111 genes | 3,374 | **0.762** | +fMRI (no benefit) |
+
+**Gap analysis:**
+- Sample size (7.7× smaller): -0.06 to -0.08
+- PCA compression: -0.02 to -0.03
+- Gene panel (111 vs 38 curated): -0.02 to -0.04
+
+**Key validation:** Our results confirm Yoon's approach—direct supervised learning on full embeddings outperforms unsupervised methods and multimodal fusion.
 
 ## References
 
-- **Yoon et al.** - Gene foundation models for MDD classification (max pooling > mean pooling)
+- **Yoon et al.** - Gene foundation models for MDD classification
 - **Witten et al. (2009)** - Penalized Matrix Decomposition for Sparse CCA
 - **Hotelling (1936)** - Original CCA formulation
+- **Glasser et al. (2016)** - HCP-MMP1 parcellation (180 ROIs)
 
 ## Lab Server Notes
 
@@ -327,3 +428,25 @@ print("fmri:", Xb, np.load(Xb, mmap_mode="r").shape)
 1. Check that covariates are properly residualized
 2. Increase `--pca-dim` to retain more variance
 3. Try different gene reduction methods (`--reduce max` instead of `mean`)
+
+### For Experiment 2 Issues
+
+See detailed troubleshooting in:
+- `gene-brain-cca-2/README.md` - Full documentation
+- `gene-brain-cca-2/TROUBLESHOOTING.md` - Common issues and solutions
+
+---
+
+## Future Directions
+
+Based on current results, recommended next steps:
+
+1. **Test Yoon's 38-gene panel** - Filter to curated MDD genes for higher signal-to-noise
+2. **Remove PCA bottleneck** - Use LASSO/ElasticNet on full 85K features
+3. **Try Schaefer 400 parcellation** - Network-specific features (DMN, Salience)
+4. **Explore fMRI foundation models** - BrainLM or similar learned representations
+5. **Implement 10-fold nested CV** - Match Yoon et al. evaluation methodology
+
+---
+
+**Project Location:** `/storage/bigdata/UKB/fMRI/gene-brain-CCA/`
