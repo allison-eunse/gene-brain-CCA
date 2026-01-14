@@ -22,6 +22,19 @@ A two-stage pipeline for discovering gene-brain associations using **Canonical C
 
 ---
 
+## 📖 Documentation Navigation
+
+| Document | Purpose | When to Use |
+|----------|---------|-------------|
+| **[README.md](README.md)** | Complete project overview | Understand the project |
+| **[QUICKSTART.md](QUICKSTART.md)** | Get running in <10 minutes | First time users |
+| **[INDEX.md](INDEX.md)** | Navigation guide | Find what you need |
+| **[CHANGELOG.md](CHANGELOG.md)** | Version history | Track changes |
+| **[gene-brain-cca-2/](gene-brain-cca-2/README.md)** | Best results (AUC 0.762) | Run Experiment 2 |
+| **[final_report/](final_report/comprehensive_report.md)** | Scientific analysis | Deep dive |
+
+---
+
 ## Overview
 
 This pipeline implements a rigorous framework for linking genetic embeddings (from foundation models like DNABERT2) to brain imaging features (fMRI functional connectivity), with downstream clinical prediction.

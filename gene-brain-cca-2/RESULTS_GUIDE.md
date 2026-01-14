@@ -490,7 +490,6 @@ plt.savefig('scca_component1.png', dpi=150)
 - Brain features add almost no information (+0.003)
 - fMRI may add noise or redundant patterns
 - **This study's cause:** fMRI is near chance-level (0.559), so it contributes nothing
-- **Action:** Use gene-only model for MDD prediction; fMRI fusion is not beneficial
 
 ---
 
