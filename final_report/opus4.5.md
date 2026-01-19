@@ -129,7 +129,7 @@ DNABERT-2 outputs 768 dimensions per gene. To use CCA, this was reduced to a man
 **Interpretation:**
 - **Gene dominates:** Gene variates achieve 0.588 AUC; fMRI variates near chance (0.51)
 - **Joint <= Gene:** Adding brain features does not help
-- **fMRI at chance:** The canonical brain features do not predict depression
+- **fMRI-only performance is near chance level:** The canonical brain features show minimal predictive value for depression
 
 ## 2.5 Experiment 1 Results: Max Pooling
 

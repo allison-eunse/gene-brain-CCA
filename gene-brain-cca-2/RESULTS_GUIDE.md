@@ -237,9 +237,9 @@ Early fusion: AUC=0.762
 **Interpretation:**
 - Large gain (> 5%): Modalities are complementary
 - Small gain (1-3%): Modalities overlap in information
-- **No gain (< 1%):** Features are redundant; fMRI adds no value beyond genetics
+- **No gain (< 1%):** Features are redundant; fMRI adds minimal/no value beyond genetics
 
-**This study found:** fMRI provides essentially no additional predictive value for MDD when combined with genetic embeddings.
+**This study found:** fMRI provides minimal/no additional predictive value for MDD when combined with genetic embeddings.
 
 ---
 

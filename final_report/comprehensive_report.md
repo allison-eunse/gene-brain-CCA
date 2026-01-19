@@ -318,7 +318,7 @@ DNABERT-2 outputs 768 dimensions per gene. To use CCA, this was reduced:
 
 1. **Gene dominates:** Gene variates achieve 0.588 AUC; fMRI variates near chance (0.51)
 2. **Joint ≤ Gene:** Adding brain features does NOT help—in fact, slightly decreases performance
-3. **fMRI at chance:** The canonical brain features do not predict depression independently
+3. **fMRI-only performance is near chance level:** The canonical brain features show minimal independent predictive value for depression
 4. **CCA ≈ SCCA:** No difference between methods (confirms diffuse pattern)
 
 ---
@@ -582,7 +582,7 @@ The gene↔brain association learned by SCCA is NOT stable on validation/holdout
 
 CCA/SCCA find axes that maximize gene-brain correlation, but those axes do not align with depression prediction.
 
-#### 4. fMRI Provides No Additional Value
+#### 4. fMRI Provides Minimal Additional Value
 
 | Model | Holdout AUC |
 |-------|-------------|
@@ -842,7 +842,7 @@ The two-stage approach is inferior because CCA's objective (maximize gene-brain 
 |---------|----------|
 | ✅ Gene-brain coupling exists but is weak/diffuse | ρ=0.368, p=0.04 with mean pooling |
 | ✅ Unsupervised CCA/SCCA does not improve prediction | joint 0.58 vs gene-only 0.76 |
-| ✅ fMRI contributes no predictive value for MDD | AUC 0.50-0.56 across all experiments |
+| ✅ fMRI contributes minimal/no predictive value for MDD | AUC 0.50-0.56 across all experiments |
 | ✅ Foundation model embeddings must be preserved | pooling to 1-D: 0.59 → full: 0.76 |
 | ✅ Mean pooling >> max pooling for scalar reduction | 0.59 vs 0.50 |
 | ✅ Sample size matters | N=4,218 sufficient for prediction but limits biomarker discovery |
@@ -988,7 +988,7 @@ python gene-brain-cca-2/scripts/view_results.py
 | **Experiments** | 2 (Exp 1: Pooling comparison; Exp 2: Leakage-safe pipelines) |
 | **Total Models Tested** | 20+ |
 | **Best Performance** | AUC 0.762 (Pipeline B, early_fusion_logreg, holdout) |
-| **Key Finding** | Direct supervised learning on full gene embeddings vastly outperforms unsupervised CCA; fMRI does not improve MDD prediction |
+| **Key Finding** | Direct supervised learning on full gene embeddings vastly outperforms unsupervised CCA; fMRI provides minimal/no improvement to MDD prediction |
 
 ---
 

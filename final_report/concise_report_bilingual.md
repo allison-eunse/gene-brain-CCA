@@ -12,7 +12,7 @@ This study investigated whether combining genetic embeddings (from DNABERT-2 fou
 
 **Key Findings:**
 - Gene-only prediction achieves AUC 0.759 (holdout)
-- fMRI adds no predictive value (early fusion AUC 0.762, +0.003)
+- fMRI adds minimal/no predictive value (early fusion AUC 0.762, +0.003)
 - Unsupervised CCA/SCCA underperforms direct supervised learning by 17-23 AUC points
 - Full 768-D embeddings improve performance by +29% vs scalar pooling
 
@@ -101,7 +101,7 @@ Max pooling destroys the genetic signal.
 |---------|----------|
 | Gene-brain coupling weak | r=0.368, p=0.04 |
 | CCA/SCCA hurts prediction | 0.566 vs 0.759 AUC |
-| fMRI adds no value | AUC 0.50-0.56 |
+| fMRI adds minimal/no value | AUC 0.50-0.56 |
 | Full embeddings essential | +29% improvement |
 
 ---

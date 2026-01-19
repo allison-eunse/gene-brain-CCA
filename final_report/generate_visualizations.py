@@ -355,7 +355,7 @@ def plot_02_pooling_comparison(results, save_path):
 
 def plot_03_modality_contribution(results, save_path):
     """
-    Gene vs fMRI vs Fusion showing that fMRI adds no predictive value.
+    Gene vs fMRI vs Fusion showing that fMRI adds minimal/no predictive value.
     """
     fig, ax = plt.subplots(figsize=(10, 7))
     
@@ -393,7 +393,7 @@ def plot_03_modality_contribution(results, save_path):
            bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
     
     # Highlight fMRI failure
-    ax.annotate('Near chance!\nfMRI alone\nfails to predict MDD',
+    ax.annotate('Near chance!\nfMRI alone shows\nminimal predictive value',
                xy=(1, aucs[1]), xytext=(1.5, 0.65),
                fontsize=10, ha='center',
                arrowprops=dict(arrowstyle='->', color='red', lw=2),
@@ -772,7 +772,7 @@ def plot_09_summary_dashboard(results, save_path):
     ✓ Gene-only prediction achieves 
       AUC 0.759 (holdout)
     
-    ✓ fMRI adds NO predictive value
+    ✓ fMRI adds minimal/no predictive value
       (Δ = +0.003, negligible)
     
     ✓ CCA/SCCA hurts performance by

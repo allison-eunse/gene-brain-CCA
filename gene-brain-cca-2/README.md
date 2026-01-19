@@ -43,7 +43,7 @@ Both pipelines use **fold-wise Stage 1 fitting** to avoid data leakage and provi
 
 ### Core Conclusion
 
-> **Gene-brain correlation (unsupervised objective) does NOT translate into clinical prediction power (supervised objective).** Full foundation model embeddings substantially outperform scalar reductions for depression prediction. fMRI adds no predictive value beyond genetics.
+> **Gene-brain correlation (unsupervised objective) does NOT translate into clinical prediction power (supervised objective).** Full foundation model embeddings substantially outperform scalar reductions for depression prediction. fMRI adds minimal/no predictive value beyond genetics.
 
 ---
 
@@ -642,11 +642,11 @@ gene-brain-cca-2/
 |---------|----------|
 | ✅ Gene-brain coupling exists but is weak/diffuse | ρ=0.156-0.368, p=0.04 (mean pooling) |
 | ✅ Unsupervised CCA/SCCA does NOT improve prediction | Joint 0.56 vs gene-only 0.76 |
-| ✅ fMRI contributes no predictive value for MDD | AUC 0.50-0.56 across all experiments |
+| ✅ fMRI contributes minimal/no predictive value for MDD | AUC 0.50-0.56 across all experiments |
 | ✅ Foundation model embeddings must be preserved | 1-D pooling: 0.59 → full: 0.76 |
 | ✅ Mean pooling >> max pooling for scalar reduction | 0.59 vs 0.50 |
 
-### Why fMRI Failed
+### Why fMRI Showed Minimal Predictive Value
 
 Across ALL experiments: fMRI-only AUC 0.50-0.56 (near chance level)
 

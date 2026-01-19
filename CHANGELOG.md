@@ -42,7 +42,7 @@ All notable changes to the Gene-Brain CCA project will be documented in this fil
 2. **Gene >> fMRI for MDD prediction** (+36% relative)
 3. **CCA/SCCA hurts prediction** (objective mismatch)
 4. **Gene-brain coupling is diffuse** (sparsity < 10%)
-5. **fMRI adds no predictive value** (+0.003 in fusion)
+5. **fMRI adds minimal/no predictive value** (+0.003 in fusion)
 
 ---
 

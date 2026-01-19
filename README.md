@@ -16,7 +16,7 @@ A two-stage pipeline for discovering gene-brain associations using **Canonical C
 | **Genetics >> fMRI for MDD prediction** | AUC 0.759 vs 0.559 (+36%) |
 | **CCA/SCCA hurts prediction** | AUC 0.55 vs 0.76 (direct supervised) |
 | **Gene-brain coupling is diffuse** | SCCA sparsity < 10% |
-| **fMRI adds no predictive value** | Early fusion +0.003 over gene-only |
+| **fMRI adds minimal/no predictive value** | Early fusion +0.003 over gene-only |
 
 > **Core Conclusion:** Gene-brain correlation (unsupervised) does NOT translate into clinical prediction power (supervised). Full foundation model embeddings substantially outperform scalar reductions.
 

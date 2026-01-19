@@ -13,7 +13,7 @@ This report documents two comprehensive experiments investigating the relationsh
 
 **Key Findings:**
 - Gene-only prediction achieves AUC 0.759 (holdout)
-- fMRI contributes no additional predictive value (early fusion AUC 0.762, Δ +0.003)
+- fMRI contributes minimal/no additional predictive value (early fusion AUC 0.762, Δ +0.003)
 - Unsupervised CCA/SCCA approaches underperform direct supervised learning by 17-23 AUC points
 - Mean pooling (AUC 0.588) substantially outperforms max pooling (AUC 0.505) for 1-D gene reduction
 - Full 768-D gene embeddings (via PCA512) improve performance by +23% relative to scalar pooling
@@ -455,7 +455,7 @@ Stage 2 (Prediction) needs: max correlation(features, MDD label)
 
 1. ✅ **Gene-brain coupling exists but is weak/diffuse** (ρ=0.368, p=0.04 with mean pooling)
 2. ✅ **Unsupervised CCA/SCCA does not improve prediction** (joint 0.58 vs gene-only 0.76)
-3. ✅ **fMRI contributes no predictive value** for MDD in this dataset (AUC 0.50-0.56)
+3. ✅ **fMRI contributes minimal/no predictive value** for MDD in this dataset (AUC 0.50-0.56)
 4. ✅ **Foundation model embeddings must be preserved** (pooling to 1-D: 0.59 → full: 0.76)
 5. ✅ **Mean pooling >> max pooling** for scalar reduction (0.59 vs 0.50)
 6. ✅ **Sample size matters** (N=4,218 sufficient for prediction but not robust biomarker discovery)
@@ -543,7 +543,7 @@ model = LogisticRegressionCV(penalty='elasticnet', l1_ratios=[0.5, 0.7, 0.9])
 | **Experiments** | 2 (Exp 1: Pooling comparison; Exp 2: Leakage-safe pipelines) |
 | **Total Models Tested** | 20+ |
 | **Best Performance** | AUC 0.762 (Pipeline B, early_fusion_logreg, holdout) |
-| **Key Finding** | Direct supervised learning on full gene embeddings vastly outperforms unsupervised CCA; fMRI does not improve MDD prediction |
+| **Key Finding** | Direct supervised learning on full gene embeddings vastly outperforms unsupervised CCA; fMRI provides minimal/no improvement to MDD prediction |
 
 ---
 
