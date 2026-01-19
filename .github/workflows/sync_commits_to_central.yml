@@ -40,10 +40,34 @@ jobs:
             msg = msg.strip().replace("\r", " ")
             if len(msg) > 120:
               msg = msg[:120]
-            commits.append({"sha": sha, "message": msg, "timestamp": ts})
+            commits.append({"sha_short": sha, "message": msg, "committed_at": ts})
           
+          meta = subprocess.check_output(
+              ["git", "config", "--get", "remote.origin.url"],
+              text=True,
+          ).strip()
+          # Parse owner/repo from git@github.com:owner/repo.git or https://github.com/owner/repo.git
+          owner = repo = ""
+          if meta.startswith("git@github.com:"):
+              path = meta.split("git@github.com:", 1)[1]
+          elif "github.com/" in meta:
+              path = meta.split("github.com/", 1)[1]
+          else:
+              path = meta
+          if path.endswith(".git"):
+              path = path[:-4]
+          if "/" in path:
+              owner, repo = path.split("/", 1)
+
+          payload = {
+              "owner": owner,
+              "repo": repo,
+              "updated_at": subprocess.check_output(["git", "log", "-1", "--pretty=%cI"], text=True).strip(),
+              "commits": commits,
+          }
+
           with open("commits.json", "w", encoding="utf-8") as f:
-            json.dump(commits, f, ensure_ascii=False, indent=2)
+            json.dump(payload, f, ensure_ascii=False, indent=2)
             f.write("\n")
           PY
 
