@@ -64,7 +64,11 @@ jobs:
           set -euo pipefail
           
           cd central
-          default_branch="$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@^origin/@@')"
+          default_branch="$(git ls-remote --symref origin HEAD 2>/dev/null | sed -n 's@^ref: refs/heads/@@p' | cut -f1)"
+          if [ -z "$default_branch" ]; then
+            default_branch="main"
+          fi
+          git fetch origin "$default_branch"
           git checkout -B "$default_branch" "origin/$default_branch"
           
           target_path="site/data/${OWNER}__${REPO}/commits.json"
