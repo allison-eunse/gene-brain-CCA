@@ -1,0 +1,19 @@
+{
+  "tag": "schaefer17_DMN_Sal_Limbic",
+  "networks": [
+    "DefaultA",
+    "DefaultB",
+    "DefaultC",
+    "SalVentAttnA",
+    "SalVentAttnB",
+    "LimbicA",
+    "LimbicB"
+  ],
+  "n_selected_rois": 154,
+  "feature_length": 11781,
+  "n_subjects": 4218,
+  "labels_csv": "/storage/bigdata/UKB/fMRI/atlases/Schaefer2018_400Parcels_17Networks_order_FSLMNI152_2mm.Centroid_RAS.csv",
+  "glob": "*/schaefer_400Parcels_17Networks_*.npy",
+  "root": "/storage/bigdata/UKB/fMRI/UKB_ROI",
+  "ids_keep": "/storage/bigdata/UKB/fMRI/gene-brain-CCA/gene-brain-cca-2/derived/interpretable/ids_common.npy"
+}

@@ -1,0 +1,16 @@
+{
+  "tag": "schaefer7_summary",
+  "n_subjects": 4218,
+  "feature_length": 21,
+  "order": [
+    "Vis",
+    "SomMot",
+    "DorsAttn",
+    "SalVentAttn",
+    "Limbic",
+    "Cont",
+    "Default"
+  ],
+  "labels_csv": "/storage/bigdata/UKB/fMRI/atlases/Schaefer2018_400Parcels_17Networks_order_FSLMNI152_2mm.Centroid_RAS.csv",
+  "glob": "*/schaefer_400Parcels_17Networks_*.npy"
+}
