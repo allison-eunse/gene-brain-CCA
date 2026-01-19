@@ -1,0 +1,96 @@
+name: Sync Commits to Central
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  sync-commits:
+    # Only sync when pushing to the repo's default branch (main/master/etc)
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Build commits.json (metadata only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import subprocess
+          
+          N = 50
+          # Fields: short sha, committer timestamp (ISO-8601), one-line subject
+          fmt = "%h\x1f%cI\x1f%s"
+          raw = subprocess.check_output(
+              ["git", "log", f"-n{N}", f"--pretty=format:{fmt}"],
+              text=True,
+          )
+          
+          commits = []
+          for line in raw.splitlines():
+            sha, ts, msg = line.split("\x1f", 2)
+            msg = msg.strip().replace("\r", " ")
+            if len(msg) > 120:
+              msg = msg[:120]
+            commits.append({"sha": sha, "message": msg, "timestamp": ts})
+          
+          with open("commits.json", "w", encoding="utf-8") as f:
+            json.dump(commits, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+          PY
+
+      - name: Checkout central tracking repo
+        uses: actions/checkout@v4
+        with:
+          repository: allison-eunse/gene-brain
+          token: ${{ secrets.BIG_REPO_TOKEN }}
+          path: central
+          fetch-depth: 1
+
+      - name: Update central site/data/<owner>__<repo>/commits.json
+        shell: bash
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          
+          cd central
+          default_branch="$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@^origin/@@')"
+          git checkout -B "$default_branch" "origin/$default_branch"
+          
+          target_path="site/data/${OWNER}__${REPO}/commits.json"
+          mkdir -p "$(dirname "$target_path")"
+          cp ../commits.json "$target_path"
+          
+          git config user.name "commit-sync[bot]"
+          git config user.email "commit-sync@users.noreply.github.com"
+          
+          git add "$target_path"
+          if git diff --cached --quiet; then
+            echo "No changes to sync."
+            exit 0
+          fi
+          
+          git commit -m "sync: commits for ${OWNER}/${REPO}"
+          
+          # Basic retry to reduce race-condition failures when multiple repos push at once.
+          for i in 1 2 3; do
+            git pull --rebase
+            if git push; then
+              exit 0
+            fi
+            echo "Push failed (attempt $i). Retrying in 5s..."
+            sleep 5
+          done
+          
+          echo "Failed to push after retries."
+          exit 1
