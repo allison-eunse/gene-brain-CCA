@@ -1,0 +1,47 @@
+{
+  "feature_type": "anatomical_summary_fc",
+  "n_groups": 5,
+  "n_fc_features": 10,
+  "groups": [
+    "Hippocampus",
+    "Amygdala",
+    "Thalamus",
+    "NAc",
+    "Caudate"
+  ],
+  "group_rois": {
+    "Hippocampus": [
+      6,
+      7
+    ],
+    "Amygdala": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "Thalamus": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      21,
+      22,
+      23
+    ],
+    "NAc": [
+      24
+    ],
+    "Caudate": [
+      31,
+      32
+    ]
+  },
+  "n_subjects_input": 144,
+  "n_subjects_kept": 128,
+  "n_subjects_dropped": 16,
+  "std_threshold": 1e-06,
+  "group_valid_min_fraction": 0.5
+}

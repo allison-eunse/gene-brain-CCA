@@ -1,0 +1,82 @@
+{
+  "best_config": {
+    "method": "cca",
+    "gene_pca_dim": 256,
+    "c1": null,
+    "c2": null,
+    "r_holdout_cc1": 0.09704590975077182
+  },
+  "n_train": 596,
+  "n_rois": 50,
+  "n_fc_features": 1225,
+  "top_10_rois": [
+    {
+      "roi_name": "PUT-ventral-l",
+      "weight_norm": 0.026048770324271456
+    },
+    {
+      "roi_name": "AMY-medial-l",
+      "weight_norm": 0.02586295536952282
+    },
+    {
+      "roi_name": "NAc-core-l",
+      "weight_norm": 0.025516342161647436
+    },
+    {
+      "roi_name": "CAU-body-r",
+      "weight_norm": 0.02540684316647873
+    },
+    {
+      "roi_name": "GP-internal-l",
+      "weight_norm": 0.024864648213675417
+    },
+    {
+      "roi_name": "AMY-medial-r",
+      "weight_norm": 0.02463298850524297
+    },
+    {
+      "roi_name": "THA-VA-r",
+      "weight_norm": 0.02433688112605627
+    },
+    {
+      "roi_name": "HIP-subiculum-l",
+      "weight_norm": 0.024025299891708405
+    },
+    {
+      "roi_name": "THA-VP-l",
+      "weight_norm": 0.023463803393673266
+    },
+    {
+      "roi_name": "THA-PU-r",
+      "weight_norm": 0.023297864233737312
+    }
+  ],
+  "hippocampus_summary": {
+    "total_weight": 8.608089824908582,
+    "total_weight_norm": 0.16096270747109273,
+    "n_rois": 8,
+    "ranks": [
+      8,
+      15,
+      18,
+      19,
+      20,
+      22,
+      46,
+      48
+    ],
+    "mean_rank": 24.5
+  },
+  "amygdala_summary": {
+    "total_weight": 4.764168311871486,
+    "total_weight_norm": 0.08908520309672346,
+    "n_rois": 4,
+    "ranks": [
+      2,
+      6,
+      25,
+      30
+    ],
+    "mean_rank": 15.75
+  }
+}

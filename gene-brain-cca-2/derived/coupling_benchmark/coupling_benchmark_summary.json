@@ -1,0 +1,22 @@
+[
+  {
+    "brain_feature": "schaefer7_summary",
+    "brain_dim": 21,
+    "best_config": "scca_pca64_c0.1_0.1",
+    "mean_r_val_cc1": 0.010390043233252022,
+    "std_r_val_cc1": 0.03138480972836961,
+    "r_holdout_cc1": 0.01270567878476005,
+    "overfitting_gap": 0.07821497133483304,
+    "generalization_gap": 0.07377885475765165
+  },
+  {
+    "brain_feature": "schaefer17_summary",
+    "brain_dim": 136,
+    "best_config": "scca_pca128_c0.1_0.1",
+    "mean_r_val_cc1": 0.03834024145887338,
+    "std_r_val_cc1": 0.03140222158898764,
+    "r_holdout_cc1": 0.04179289393244377,
+    "overfitting_gap": 0.0418366142972945,
+    "generalization_gap": 0.028359015686782715
+  }
+]

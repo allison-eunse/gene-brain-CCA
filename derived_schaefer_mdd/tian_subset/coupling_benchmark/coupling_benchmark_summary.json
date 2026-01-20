@@ -1,0 +1,12 @@
+[
+  {
+    "brain_feature": "tian_fc",
+    "brain_dim": 1225,
+    "best_config": "scca_pca128_c0.1_0.1",
+    "mean_r_val_cc1": 0.05502795224405903,
+    "std_r_val_cc1": 0.0715617150589556,
+    "r_holdout_cc1": -0.015025152381136804,
+    "overfitting_gap": 0.21202966634280113,
+    "generalization_gap": 0.2896145058452852
+  }
+]

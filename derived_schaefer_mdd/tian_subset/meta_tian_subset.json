@@ -1,0 +1,8 @@
+{
+  "n_subjects": 746,
+  "n_mdd": 318,
+  "n_control": 428,
+  "gene_dim": 85248,
+  "source_ids_common": "gene-brain-cca-2/derived/interpretable/ids_common.npy",
+  "source_tian_ts_dir": "derived_schaefer_mdd/tian_timeseries"
+}

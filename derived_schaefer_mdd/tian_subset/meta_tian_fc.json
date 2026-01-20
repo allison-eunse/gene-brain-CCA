@@ -1,0 +1,8 @@
+{
+  "tag": "tian_fc",
+  "n_subjects": 746,
+  "n_rois": 50,
+  "feature_length": 1225,
+  "roi_root": "derived_schaefer_mdd/tian_timeseries",
+  "n_missing": 0
+}

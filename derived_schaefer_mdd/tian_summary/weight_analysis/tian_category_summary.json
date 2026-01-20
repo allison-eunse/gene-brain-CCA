@@ -1,0 +1,47 @@
+{
+  "Hippocampus": {
+    "total_weight": 0.0,
+    "total_weight_norm": 0.0,
+    "n_rois": 1,
+    "ranks": [
+      3
+    ],
+    "mean_rank": 3.0
+  },
+  "Amygdala": {
+    "total_weight": 1.0,
+    "total_weight_norm": 0.499999999975,
+    "n_rois": 1,
+    "ranks": [
+      1
+    ],
+    "mean_rank": 1.0
+  },
+  "Thalamus": {
+    "total_weight": 0.0,
+    "total_weight_norm": 0.0,
+    "n_rois": 1,
+    "ranks": [
+      4
+    ],
+    "mean_rank": 4.0
+  },
+  "NAc": {
+    "total_weight": 0.0,
+    "total_weight_norm": 0.0,
+    "n_rois": 1,
+    "ranks": [
+      5
+    ],
+    "mean_rank": 5.0
+  },
+  "Caudate": {
+    "total_weight": 1.0,
+    "total_weight_norm": 0.499999999975,
+    "n_rois": 1,
+    "ranks": [
+      2
+    ],
+    "mean_rank": 2.0
+  }
+}

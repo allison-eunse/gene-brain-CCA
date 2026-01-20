@@ -1,0 +1,352 @@
+[
+  {
+    "rank": 1,
+    "roi_idx": 38,
+    "roi_name": "PUT-ventral-l",
+    "weight": 1.3930565551651843,
+    "weight_norm": 0.026048770324271456
+  },
+  {
+    "rank": 2,
+    "roi_idx": 10,
+    "roi_name": "AMY-medial-l",
+    "weight": 1.3831193973823803,
+    "weight_norm": 0.02586295536952282
+  },
+  {
+    "rank": 3,
+    "roi_idx": 24,
+    "roi_name": "NAc-core-l",
+    "weight": 1.364582944592986,
+    "weight_norm": 0.025516342161647436
+  },
+  {
+    "rank": 4,
+    "roi_idx": 31,
+    "roi_name": "CAU-body-r",
+    "weight": 1.358727071509348,
+    "weight_norm": 0.02540684316647873
+  },
+  {
+    "rank": 5,
+    "roi_idx": 40,
+    "roi_name": "GP-internal-l",
+    "weight": 1.3297311448772045,
+    "weight_norm": 0.024864648213675417
+  },
+  {
+    "rank": 6,
+    "roi_idx": 11,
+    "roi_name": "AMY-medial-r",
+    "weight": 1.3173422654260014,
+    "weight_norm": 0.02463298850524297
+  },
+  {
+    "rank": 7,
+    "roi_idx": 13,
+    "roi_name": "THA-VA-r",
+    "weight": 1.3015068029272414,
+    "weight_norm": 0.02433688112605627
+  },
+  {
+    "rank": 8,
+    "roi_idx": 6,
+    "roi_name": "HIP-subiculum-l",
+    "weight": 1.2848438174745147,
+    "weight_norm": 0.024025299891708405
+  },
+  {
+    "rank": 9,
+    "roi_idx": 16,
+    "roi_name": "THA-VP-l",
+    "weight": 1.2548156676788478,
+    "weight_norm": 0.023463803393673266
+  },
+  {
+    "rank": 10,
+    "roi_idx": 23,
+    "roi_name": "THA-PU-r",
+    "weight": 1.245941443228721,
+    "weight_norm": 0.023297864233737312
+  },
+  {
+    "rank": 11,
+    "roi_idx": 35,
+    "roi_name": "PUT-anterior-r",
+    "weight": 1.243078702295377,
+    "weight_norm": 0.02324433382910724
+  },
+  {
+    "rank": 12,
+    "roi_idx": 41,
+    "roi_name": "GP-internal-r",
+    "weight": 1.2141702227782114,
+    "weight_norm": 0.022703774050270936
+  },
+  {
+    "rank": 13,
+    "roi_idx": 15,
+    "roi_name": "THA-VL-r",
+    "weight": 1.1992553748640253,
+    "weight_norm": 0.022424881247033665
+  },
+  {
+    "rank": 14,
+    "roi_idx": 32,
+    "roi_name": "CAU-tail-l",
+    "weight": 1.198302380248873,
+    "weight_norm": 0.022407061196757654
+  },
+  {
+    "rank": 15,
+    "roi_idx": 5,
+    "roi_name": "HIP-tail-r",
+    "weight": 1.1771715891053987,
+    "weight_norm": 0.022011936445199207
+  },
+  {
+    "rank": 16,
+    "roi_idx": 19,
+    "roi_name": "THA-IL-r",
+    "weight": 1.163901806157111,
+    "weight_norm": 0.02176380471860761
+  },
+  {
+    "rank": 17,
+    "roi_idx": 39,
+    "roi_name": "PUT-ventral-r",
+    "weight": 1.1450246087471951,
+    "weight_norm": 0.02141081992565459
+  },
+  {
+    "rank": 18,
+    "roi_idx": 4,
+    "roi_name": "HIP-tail-l",
+    "weight": 1.134917069922093,
+    "weight_norm": 0.02122181901508673
+  },
+  {
+    "rank": 19,
+    "roi_idx": 2,
+    "roi_name": "HIP-body-l",
+    "weight": 1.10587270374486,
+    "weight_norm": 0.020678718291028138
+  },
+  {
+    "rank": 20,
+    "roi_idx": 3,
+    "roi_name": "HIP-body-r",
+    "weight": 1.0966601562595852,
+    "weight_norm": 0.020506452827249527
+  },
+  {
+    "rank": 21,
+    "roi_idx": 49,
+    "roi_name": "SN-r",
+    "weight": 1.096065435164428,
+    "weight_norm": 0.02049533213501538
+  },
+  {
+    "rank": 22,
+    "roi_idx": 7,
+    "roi_name": "HIP-subiculum-r",
+    "weight": 1.0929965646164572,
+    "weight_norm": 0.020437947311863294
+  },
+  {
+    "rank": 23,
+    "roi_idx": 17,
+    "roi_name": "THA-VP-r",
+    "weight": 1.0808497179245786,
+    "weight_norm": 0.020210813375005028
+  },
+  {
+    "rank": 24,
+    "roi_idx": 26,
+    "roi_name": "NAc-shell-l",
+    "weight": 1.072280797255506,
+    "weight_norm": 0.02005058309174197
+  },
+  {
+    "rank": 25,
+    "roi_idx": 9,
+    "roi_name": "AMY-lateral-r",
+    "weight": 1.0708454303281145,
+    "weight_norm": 0.020023743159591302
+  },
+  {
+    "rank": 26,
+    "roi_idx": 33,
+    "roi_name": "CAU-tail-r",
+    "weight": 1.0442010551549308,
+    "weight_norm": 0.01952551987730849
+  },
+  {
+    "rank": 27,
+    "roi_idx": 22,
+    "roi_name": "THA-PU-l",
+    "weight": 1.0364006369763472,
+    "weight_norm": 0.019379659825314335
+  },
+  {
+    "rank": 28,
+    "roi_idx": 36,
+    "roi_name": "PUT-posterior-l",
+    "weight": 1.0173848795863936,
+    "weight_norm": 0.01902408409871777
+  },
+  {
+    "rank": 29,
+    "roi_idx": 14,
+    "roi_name": "THA-VL-l",
+    "weight": 1.0109489870988964,
+    "weight_norm": 0.0189037393183017
+  },
+  {
+    "rank": 30,
+    "roi_idx": 8,
+    "roi_name": "AMY-lateral-l",
+    "weight": 0.9928612187349901,
+    "weight_norm": 0.018565516062366377
+  },
+  {
+    "rank": 31,
+    "roi_idx": 34,
+    "roi_name": "PUT-anterior-l",
+    "weight": 0.9845203287173155,
+    "weight_norm": 0.018409549725203093
+  },
+  {
+    "rank": 32,
+    "roi_idx": 18,
+    "roi_name": "THA-IL-l",
+    "weight": 0.9842237380210215,
+    "weight_norm": 0.018404003774538394
+  },
+  {
+    "rank": 33,
+    "roi_idx": 47,
+    "roi_name": "VTA-r",
+    "weight": 0.9793047916455808,
+    "weight_norm": 0.01831202437578666
+  },
+  {
+    "rank": 34,
+    "roi_idx": 28,
+    "roi_name": "CAU-head-l",
+    "weight": 0.9573013166279575,
+    "weight_norm": 0.017900581304832547
+  },
+  {
+    "rank": 35,
+    "roi_idx": 46,
+    "roi_name": "VTA-l",
+    "weight": 0.9527545066595228,
+    "weight_norm": 0.017815560486304602
+  },
+  {
+    "rank": 36,
+    "roi_idx": 20,
+    "roi_name": "THA-MD-l",
+    "weight": 0.9497435182563135,
+    "weight_norm": 0.017759258001618372
+  },
+  {
+    "rank": 37,
+    "roi_idx": 21,
+    "roi_name": "THA-MD-r",
+    "weight": 0.9470645084433393,
+    "weight_norm": 0.01770916318597296
+  },
+  {
+    "rank": 38,
+    "roi_idx": 42,
+    "roi_name": "GP-external-l",
+    "weight": 0.9453885358403973,
+    "weight_norm": 0.01767782416729354
+  },
+  {
+    "rank": 39,
+    "roi_idx": 29,
+    "roi_name": "CAU-head-r",
+    "weight": 0.9340820704996906,
+    "weight_norm": 0.01746640452481931
+  },
+  {
+    "rank": 40,
+    "roi_idx": 25,
+    "roi_name": "NAc-core-r",
+    "weight": 0.9165674050406073,
+    "weight_norm": 0.017138897722487074
+  },
+  {
+    "rank": 41,
+    "roi_idx": 43,
+    "roi_name": "GP-external-r",
+    "weight": 0.9116359780473762,
+    "weight_norm": 0.017046684948611314
+  },
+  {
+    "rank": 42,
+    "roi_idx": 12,
+    "roi_name": "THA-VA-l",
+    "weight": 0.9064531476510594,
+    "weight_norm": 0.016949771181454677
+  },
+  {
+    "rank": 43,
+    "roi_idx": 30,
+    "roi_name": "CAU-body-l",
+    "weight": 0.901801762285524,
+    "weight_norm": 0.016862794907141
+  },
+  {
+    "rank": 44,
+    "roi_idx": 27,
+    "roi_name": "NAc-shell-r",
+    "weight": 0.8925200757140519,
+    "weight_norm": 0.016689236611301762
+  },
+  {
+    "rank": 45,
+    "roi_idx": 48,
+    "roi_name": "SN-l",
+    "weight": 0.8878368448823385,
+    "weight_norm": 0.016601664858483453
+  },
+  {
+    "rank": 46,
+    "roi_idx": 0,
+    "roi_name": "HIP-head-l",
+    "weight": 0.8862824938343176,
+    "weight_norm": 0.01657260004176581
+  },
+  {
+    "rank": 47,
+    "roi_idx": 37,
+    "roi_name": "PUT-posterior-r",
+    "weight": 0.868467482258928,
+    "weight_norm": 0.016239477066154435
+  },
+  {
+    "rank": 48,
+    "roi_idx": 1,
+    "roi_name": "HIP-head-r",
+    "weight": 0.8293454299513551,
+    "weight_norm": 0.015507933647191618
+  },
+  {
+    "rank": 49,
+    "roi_idx": 44,
+    "roi_name": "HTH-l",
+    "weight": 0.7106548403414625,
+    "weight_norm": 0.01328853781797215
+  },
+  {
+    "rank": 50,
+    "roi_idx": 45,
+    "roi_name": "HTH-r",
+    "weight": 0.7059785294936914,
+    "weight_norm": 0.013201095461962386
+  }
+]

@@ -1,0 +1,685 @@
+{
+  "n_total": 746,
+  "n_bad_ts": 514,
+  "n_good_ts": 232,
+  "sample_bad_eids": [
+    "1201311",
+    "1057429",
+    "1574086",
+    "1503716",
+    "1453979",
+    "1265887",
+    "1181933",
+    "1166102"
+  ],
+  "sample_good_eids": [
+    "1640824",
+    "1453908",
+    "1018866",
+    "1018012",
+    "1075281",
+    "1230418",
+    "1238765",
+    "1583624"
+  ],
+  "bad_checks": [
+    {
+      "eid": "1201311",
+      "subject": "1201311_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1201311_20227_2_0/1201311_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 16935.39453125,
+          "global_nonzero_frac": 0.04193860378959683,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 16854.640625,
+          "global_nonzero_frac": 0.04193749591471136,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 16913.078125,
+          "global_nonzero_frac": 0.04193417229005494,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1057429",
+      "subject": "1057429_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1057429_20227_2_0/1057429_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 23916.943359375,
+          "global_nonzero_frac": 0.002186945023924558,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 23780.69921875,
+          "global_nonzero_frac": 0.002186945023924558,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 23886.03515625,
+          "global_nonzero_frac": 0.002186945023924558,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1574086",
+      "subject": "1574086_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1574086_20227_2_0/1574086_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 31714.25,
+          "global_nonzero_frac": 0.018791773807400384,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 31222.35546875,
+          "global_nonzero_frac": 0.01879066593251491,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 31262.53125,
+          "global_nonzero_frac": 0.018792881682285857,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1503716",
+      "subject": "1503716_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1503716_20227_2_0/1503716_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 19260.255859375,
+          "global_nonzero_frac": 0.03229676866132154,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 19084.853515625,
+          "global_nonzero_frac": 0.032294552911550596,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 18953.27734375,
+          "global_nonzero_frac": 0.032294552911550596,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1453979",
+      "subject": "1453979_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1453979_20227_2_0/1453979_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 21181.890625,
+          "global_nonzero_frac": 0.02810567796957554,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 21033.666015625,
+          "global_nonzero_frac": 0.028104570094690067,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 21010.720703125,
+          "global_nonzero_frac": 0.028103462219804594,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1265887",
+      "subject": "1265887_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1265887_20227_2_0/1265887_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 18988.359375,
+          "global_nonzero_frac": 0.04388846358803008,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 18901.35546875,
+          "global_nonzero_frac": 0.043885139963373655,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 19065.642578125,
+          "global_nonzero_frac": 0.04387516908940439,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1181933",
+      "subject": "1181933_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1181933_20227_2_0/1181933_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 29791.919921875,
+          "global_nonzero_frac": 0.005315583700501535,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 29698.4765625,
+          "global_nonzero_frac": 0.0053144758256160616,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 29769.74609375,
+          "global_nonzero_frac": 0.005315583700501535,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    },
+    {
+      "eid": "1166102",
+      "subject": "1166102_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1166102_20227_2_0/1166102_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 20059.81640625,
+          "global_nonzero_frac": 0.0033989601486324947,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 20145.16015625,
+          "global_nonzero_frac": 0.003400068023517968,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 20129.837890625,
+          "global_nonzero_frac": 0.003400068023517968,
+          "mask_min": 0.0,
+          "mask_max": 0.0,
+          "mask_nonzero_frac": 0.0
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": false
+    }
+  ],
+  "good_checks": [
+    {
+      "eid": "1640824",
+      "subject": "1640824_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1640824_20227_2_0/1640824_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 29407.916015625,
+          "global_nonzero_frac": 0.045405144306243206,
+          "mask_min": 0.0,
+          "mask_max": 15988.0322265625,
+          "mask_nonzero_frac": 0.405185370741483
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 27770.033203125,
+          "global_nonzero_frac": 0.04542176242952531,
+          "mask_min": 0.0,
+          "mask_max": 15472.5,
+          "mask_nonzero_frac": 0.405811623246493
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 27643.923828125,
+          "global_nonzero_frac": 0.04542065455463984,
+          "mask_min": 0.0,
+          "mask_max": 15399.931640625,
+          "mask_nonzero_frac": 0.40568637274549096
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1453908",
+      "subject": "1453908_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1453908_20227_2_0/1453908_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 33676.171875,
+          "global_nonzero_frac": 0.004068116579458448,
+          "mask_min": 0.0,
+          "mask_max": 29.204139709472656,
+          "mask_nonzero_frac": 0.000375751503006012
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 33610.01171875,
+          "global_nonzero_frac": 0.004068116579458448,
+          "mask_min": 0.0,
+          "mask_max": 32.50226974487305,
+          "mask_nonzero_frac": 0.000375751503006012
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 33622.875,
+          "global_nonzero_frac": 0.004068116579458448,
+          "mask_min": 0.0,
+          "mask_max": 31.966567993164062,
+          "mask_nonzero_frac": 0.000375751503006012
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1018866",
+      "subject": "1018866_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1018866_20227_2_0/1018866_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 32906.359375,
+          "global_nonzero_frac": 0.015411647531820937,
+          "mask_min": 0.0,
+          "mask_max": 22246.69921875,
+          "mask_nonzero_frac": 0.2317134268537074
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 33001.1015625,
+          "global_nonzero_frac": 0.015410539656935464,
+          "mask_min": 0.0,
+          "mask_max": 22124.599609375,
+          "mask_nonzero_frac": 0.23146292585170342
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 32775.4140625,
+          "global_nonzero_frac": 0.01541275540670641,
+          "mask_min": 0.0,
+          "mask_max": 22251.59375,
+          "mask_nonzero_frac": 0.2317134268537074
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1018012",
+      "subject": "1018012_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1018012_20227_2_0/1018012_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 37151.23046875,
+          "global_nonzero_frac": 0.09128002756392715,
+          "mask_min": 0.0,
+          "mask_max": 214.6966094970703,
+          "mask_nonzero_frac": 0.004133266533066132
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 35884.99609375,
+          "global_nonzero_frac": 0.09127670393927073,
+          "mask_min": 0.0,
+          "mask_max": 217.20327758789062,
+          "mask_nonzero_frac": 0.004133266533066132
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 36077.859375,
+          "global_nonzero_frac": 0.09127448818949978,
+          "mask_min": 0.0,
+          "mask_max": 229.72108459472656,
+          "mask_nonzero_frac": 0.004133266533066132
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1075281",
+      "subject": "1075281_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1075281_20227_2_0/1075281_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 44326.93359375,
+          "global_nonzero_frac": 0.06284420287848053,
+          "mask_min": 0.0,
+          "mask_max": 31030.099609375,
+          "mask_nonzero_frac": 0.40756513026052105
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 44382.234375,
+          "global_nonzero_frac": 0.06284309500359506,
+          "mask_min": 0.0,
+          "mask_max": 31072.095703125,
+          "mask_nonzero_frac": 0.40756513026052105
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 44416.51953125,
+          "global_nonzero_frac": 0.06283866350405316,
+          "mask_min": 0.0,
+          "mask_max": 30956.484375,
+          "mask_nonzero_frac": 0.40756513026052105
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1230418",
+      "subject": "1230418_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1230418_20227_2_0/1230418_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 38013.44140625,
+          "global_nonzero_frac": 0.09217629834627517,
+          "mask_min": 0.0,
+          "mask_max": 38013.44140625,
+          "mask_nonzero_frac": 0.1189879759519038
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 38067.09375,
+          "global_nonzero_frac": 0.09217297472161874,
+          "mask_min": 0.0,
+          "mask_max": 38067.09375,
+          "mask_nonzero_frac": 0.1189879759519038
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 38027.37890625,
+          "global_nonzero_frac": 0.09217186684673326,
+          "mask_min": 0.0,
+          "mask_max": 38027.37890625,
+          "mask_nonzero_frac": 0.1189879759519038
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1238765",
+      "subject": "1238765_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1238765_20227_2_0/1238765_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 30886.11328125,
+          "global_nonzero_frac": 0.0016407627053861553,
+          "mask_min": 0.0,
+          "mask_max": 11331.2734375,
+          "mask_nonzero_frac": 0.009268537074148297
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 30711.798828125,
+          "global_nonzero_frac": 0.0016407627053861553,
+          "mask_min": 0.0,
+          "mask_max": 11012.228515625,
+          "mask_nonzero_frac": 0.009268537074148297
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 30852.4921875,
+          "global_nonzero_frac": 0.0016407627053861553,
+          "mask_min": 0.0,
+          "mask_max": 11223.0625,
+          "mask_nonzero_frac": 0.009268537074148297
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    },
+    {
+      "eid": "1583624",
+      "subject": "1583624_20227_2_0",
+      "fmri_file": "/storage/bigdata/UKB/fMRI/UKB_20227_1_recon/1583624_20227_2_0/1583624_20227_2_0_MNI152_2mm.nii.gz",
+      "shape": [
+        91,
+        109,
+        91,
+        490
+      ],
+      "tps": [
+        {
+          "t": 0,
+          "global_min": 0.0,
+          "global_max": 43391.26171875,
+          "global_nonzero_frac": 0.027826493498436234,
+          "mask_min": 0.0,
+          "mask_max": 28949.7265625,
+          "mask_nonzero_frac": 0.026803607214428857
+        },
+        {
+          "t": 245,
+          "global_min": 0.0,
+          "global_max": 43469.0703125,
+          "global_nonzero_frac": 0.027820954124008868,
+          "mask_min": 0.0,
+          "mask_max": 28864.91796875,
+          "mask_nonzero_frac": 0.026803607214428857
+        },
+        {
+          "t": 489,
+          "global_min": 0.0,
+          "global_max": 43418.86328125,
+          "global_nonzero_frac": 0.02782206199889434,
+          "mask_min": 0.0,
+          "mask_max": 28674.69140625,
+          "mask_nonzero_frac": 0.026803607214428857
+        }
+      ],
+      "mask_any_nonzero_in_sampled_tps": true
+    }
+  ]
+}

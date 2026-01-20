@@ -1,0 +1,53 @@
+{
+  "best_config": {
+    "method": "scca",
+    "gene_pca_dim": 102,
+    "c1": 0.1,
+    "c2": 0.1,
+    "r_holdout_cc1": -0.09608424057282026
+  },
+  "n_train": 102,
+  "unit_type": "group",
+  "n_units": 5,
+  "n_fc_features": 10,
+  "top_10_units": [
+    {
+      "unit_name": "Amygdala",
+      "weight_norm": 0.499999999975
+    },
+    {
+      "unit_name": "Caudate",
+      "weight_norm": 0.499999999975
+    },
+    {
+      "unit_name": "Hippocampus",
+      "weight_norm": 0.0
+    },
+    {
+      "unit_name": "Thalamus",
+      "weight_norm": 0.0
+    },
+    {
+      "unit_name": "NAc",
+      "weight_norm": 0.0
+    }
+  ],
+  "hippocampus_summary": {
+    "total_weight": 0.0,
+    "total_weight_norm": 0.0,
+    "n_rois": 1,
+    "ranks": [
+      3
+    ],
+    "mean_rank": 3.0
+  },
+  "amygdala_summary": {
+    "total_weight": 1.0,
+    "total_weight_norm": 0.499999999975,
+    "n_rois": 1,
+    "ranks": [
+      1
+    ],
+    "mean_rank": 1.0
+  }
+}

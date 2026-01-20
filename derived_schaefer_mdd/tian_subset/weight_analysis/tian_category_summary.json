@@ -1,0 +1,124 @@
+{
+  "Hippocampus": {
+    "total_weight": 8.608089824908582,
+    "total_weight_norm": 0.16096270747109273,
+    "n_rois": 8,
+    "ranks": [
+      8,
+      15,
+      18,
+      19,
+      20,
+      22,
+      46,
+      48
+    ],
+    "mean_rank": 24.5
+  },
+  "Amygdala": {
+    "total_weight": 4.764168311871486,
+    "total_weight_norm": 0.08908520309672346,
+    "n_rois": 4,
+    "ranks": [
+      2,
+      6,
+      25,
+      30
+    ],
+    "mean_rank": 15.75
+  },
+  "Thalamus": {
+    "total_weight": 13.081105349227505,
+    "total_weight_norm": 0.24460364338131357,
+    "n_rois": 12,
+    "ranks": [
+      7,
+      9,
+      10,
+      13,
+      16,
+      23,
+      27,
+      29,
+      32,
+      36,
+      37,
+      42
+    ],
+    "mean_rank": 23.416666666666668
+  },
+  "NAc": {
+    "total_weight": 4.245951222603152,
+    "total_weight_norm": 0.07939505958717824,
+    "n_rois": 4,
+    "ranks": [
+      3,
+      24,
+      40,
+      44
+    ],
+    "mean_rank": 27.75
+  },
+  "Caudate": {
+    "total_weight": 6.3944156563263235,
+    "total_weight_norm": 0.11956920497733774,
+    "n_rois": 6,
+    "ranks": [
+      4,
+      14,
+      26,
+      34,
+      39,
+      43
+    ],
+    "mean_rank": 26.666666666666668
+  },
+  "Putamen": {
+    "total_weight": 6.651532556770394,
+    "total_weight_norm": 0.12437703496910858,
+    "n_rois": 6,
+    "ranks": [
+      1,
+      11,
+      17,
+      28,
+      31,
+      47
+    ],
+    "mean_rank": 22.5
+  },
+  "Globus Pallidus": {
+    "total_weight": 4.4009258815431895,
+    "total_weight_norm": 0.08229293137985119,
+    "n_rois": 4,
+    "ranks": [
+      5,
+      12,
+      38,
+      41
+    ],
+    "mean_rank": 24.0
+  },
+  "Hypothalamus": {
+    "total_weight": 1.416633369835154,
+    "total_weight_norm": 0.026489633279934536,
+    "n_rois": 2,
+    "ranks": [
+      49,
+      50
+    ],
+    "mean_rank": 49.5
+  },
+  "Brainstem (VTA/SN)": {
+    "total_weight": 3.9159615783518698,
+    "total_weight_norm": 0.0732245818555901,
+    "n_rois": 4,
+    "ranks": [
+      21,
+      33,
+      35,
+      45
+    ],
+    "mean_rank": 33.5
+  }
+}

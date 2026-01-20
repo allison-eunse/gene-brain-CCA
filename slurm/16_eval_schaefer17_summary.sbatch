@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=eval_tian_fc
+#SBATCH --job-name=eval_s17
 #SBATCH --partition=debug
 #SBATCH --ntasks=1
 #SBATCH --exclude=node1
@@ -16,20 +16,15 @@ source /usr/anaconda3/etc/profile.d/conda.sh
 set -u
 conda activate /scratch/connectome/allie/envs/cca_env
 
-# Force unbuffered Python output for real-time logging
-export PYTHONUNBUFFERED=1
-
 cd /storage/bigdata/UKB/fMRI/gene-brain-CCA
 
-# Use srun for proper process tracking (lab server compliance)
 srun python gene-brain-cca-2/scripts/run_predictive_suite.py \
   --x-gene-wide gene-brain-cca-2/derived/wide_gene/X_gene_wide.npy \
-  --x-fmri-raw derived_schaefer_mdd/X_fmri_tian_fc.npy \
+  --x-fmri-raw derived_schaefer_mdd/X_fmri_schaefer17_summary.npy \
   --cov-age gene-brain-cca-2/derived/interpretable/cov_age.npy \
   --cov-sex gene-brain-cca-2/derived/interpretable/cov_sex.npy \
   --ids gene-brain-cca-2/derived/interpretable/ids_common.npy \
   --labels gene-brain-cca-2/derived/interpretable/labels_common.npy \
   --k 10 --c1 0.3 --c2 0.3 --n-folds 5 --holdout-frac 0.2 --seed 42 \
   --pca-components 512 \
-  --out-json gene-brain-cca-2/derived/wide_gene/predictive_suite_results_tian_fc.json
-
+  --out-json gene-brain-cca-2/derived/wide_gene/predictive_suite_results_schaefer17_summary.json

@@ -5,7 +5,7 @@
 #SBATCH --exclude=node1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH --time=02:00:00
+#SBATCH --time=01:00:00
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --error=logs/%x-%j.err
 
@@ -22,11 +22,10 @@ export PYTHONUNBUFFERED=1
 
 cd /storage/bigdata/UKB/fMRI/gene-brain-CCA
 
-# Use extracted Tian timeseries from derived_schaefer_mdd/tian_timeseries
-# Use srun for proper process tracking (per plan compliance)
-srun python scripts/build_tian_fc.py \
+# Build Tian FC for the subset of subjects with available timeseries
+# Uses ids_tian_subset.npy from Phase 1 (prepare_tian_subset.py)
+srun python scripts/build_tian_fc_subset.py \
   --roi-root derived_schaefer_mdd/tian_timeseries \
-  --ids-keep gene-brain-cca-2/derived/interpretable/ids_common.npy \
-  --out-dir derived_schaefer_mdd \
+  --ids-subset derived_schaefer_mdd/tian_subset/ids_tian_subset.npy \
+  --out-dir derived_schaefer_mdd/tian_subset \
   --tag tian_fc
-
