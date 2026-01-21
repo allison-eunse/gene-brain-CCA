@@ -121,8 +121,8 @@ def plot_top_genes(interpretable, out_dir):
     ax.barh(y_pos, weights, color=colors, alpha=0.7, edgecolor='black')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(genes, fontsize=10)
-    ax.set_xlabel('SCCA Weight (CC1)', fontsize=12, fontweight='bold')
-    ax.set_title('Top 15 Genes by SCCA Weight (First Canonical Component)', 
+    ax.set_xlabel('Loading (corr) on CC1', fontsize=12, fontweight='bold')
+    ax.set_title('Top 15 Genes by Loading (Correlation) (First Canonical Component)', 
                  fontsize=14, fontweight='bold', pad=20)
     ax.axvline(x=0, color='black', linestyle='-', linewidth=0.8)
     ax.grid(axis='x', alpha=0.3)
@@ -136,7 +136,7 @@ def plot_top_genes(interpretable, out_dir):
 
 
 def plot_network_weights(interpretable, out_dir):
-    """Network-level weights from CC1 brain weights."""
+    """Network-level values from CC1 brain loadings (correlations)."""
     fig, ax = plt.subplots(figsize=(10, 8))
     
     top_rois = interpretable['train_fit']['top_roi']['0'][:20]
@@ -149,8 +149,8 @@ def plot_network_weights(interpretable, out_dir):
     ax.barh(y_pos, weights, color=colors, alpha=0.7, edgecolor='black')
     ax.set_yticks(y_pos)
     ax.set_yticklabels(rois, fontsize=9)
-    ax.set_xlabel('SCCA Weight (CC1)', fontsize=12, fontweight='bold')
-    ax.set_title('Top 20 Brain FC Edges by SCCA Weight (Schaefer-17 Summary)', 
+    ax.set_xlabel('Loading (corr) on CC1', fontsize=12, fontweight='bold')
+    ax.set_title('Top 20 Brain FC Edges by Loading (Correlation) (Schaefer-17 Summary)', 
                  fontsize=14, fontweight='bold', pad=20)
     ax.axvline(x=0, color='black', linestyle='-', linewidth=0.8)
     ax.grid(axis='x', alpha=0.3)
@@ -179,7 +179,9 @@ gene embeddings from DNABERT-2.
 
 **Cohort:** N={n_subjects} subjects (Train: {n_train}, Holdout: {n_holdout})  
 **Gene Features:** 111 psychiatric risk genes → 85,248-D embeddings (768-D × 111 genes)  
-**Brain Features:** Schaefer cortical parcellations with Yeo-7 and Yeo-17 network-level summaries
+**Brain Features:** Static Functional Connectivity (Fisher z-transformed). Upper Triangle Only (Leakage-safe feature selection). Schaefer cortical parcellations with Yeo-7 and Yeo-17 network-level summaries.
+
+**Interpretation note:** Brain maps show Loadings (Correlations), not Beta weights, to reveal true biological contributors (e.g., DMN Core vs. DMPFC subsystem).
 
 ---
 
@@ -267,6 +269,8 @@ The following genes show the strongest associations in the first canonical compo
 
 **Brain Features:**
 - Schaefer-400 cortical parcellation → Yeo-7/17 network-level functional connectivity
+- Static Functional Connectivity (Fisher z-transformed).
+- Upper Triangle Only (Leakage-safe feature selection).
 - Residualized for age/sex on training set only (leakage-free)
 - Z-scored and standardized
 
@@ -275,6 +279,9 @@ The following genes show the strongest associations in the first canonical compo
 - Gene PCA: 64-D (Schaefer-7), 128-D (Schaefer-17)
 - 5-fold cross-validation, 20% holdout set
 - Evaluation: first canonical correlation on holdout (r_holdout_cc1)
+
+**Cross-modality stability note (for tabular MRI):**
+- Unlike fMRI, sMRI (volume) and dMRI (microstructure) are stable traits, likely yielding higher coupling stability (r_holdout) than fluctuating BOLD signals.
 
 ---
 

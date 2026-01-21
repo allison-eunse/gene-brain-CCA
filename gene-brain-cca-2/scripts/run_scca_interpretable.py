@@ -18,6 +18,36 @@ def _standardize_train_val(X_tr: np.ndarray, X_va: np.ndarray) -> tuple[np.ndarr
     return X_tr_s, X_va_s
 
 
+def _compute_loadings(X: np.ndarray, U: np.ndarray) -> np.ndarray:
+    """
+    Feature loadings = Pearson correlation between each feature column of X and each column of U.
+
+    Returns
+    -------
+    loadings : (n_features, n_components)
+    """
+    if X.ndim != 2 or U.ndim != 2:
+        raise ValueError(f"Expected 2D arrays, got X={X.ndim}D U={U.ndim}D")
+    n = X.shape[0]
+    if U.shape[0] != n:
+        raise ValueError(f"Row mismatch: X={X.shape}, U={U.shape}")
+    if n < 3:
+        return np.zeros((X.shape[1], U.shape[1]), dtype=np.float32)
+
+    Xc = X.astype(np.float64, copy=False) - X.mean(axis=0, keepdims=True)
+    Uc = U.astype(np.float64, copy=False) - U.mean(axis=0, keepdims=True)
+
+    Xsd = Xc.std(axis=0, keepdims=True)
+    Usd = Uc.std(axis=0, keepdims=True)
+    Xsd = np.where(Xsd == 0, 1.0, Xsd)
+    Usd = np.where(Usd == 0, 1.0, Usd)
+
+    # corr = cov / (sd_x * sd_u), with cov = (Xc^T Uc) / (n-1)
+    cov = (Xc.T @ Uc) / float(n - 1)
+    load = cov / (Xsd.T @ Usd)
+    return load.astype(np.float32, copy=False)
+
+
 def _build_cov(age: np.ndarray, sex: np.ndarray) -> np.ndarray:
     """(N,) age/sex -> (N,3) covariate matrix with intercept."""
     return np.column_stack(
@@ -224,14 +254,28 @@ def main():
         "sparsity_fmri": float((np.abs(Wy) < 1e-3).mean()),
     }
 
-    # Add interpretable top features per component
-    top_gene = {}
-    top_roi = {}
+    # Compute loadings (correlations) on TRAIN set (leakage-safe) for interpretation.
+    # These are more biologically meaningful than raw beta/weight magnitudes.
+    gene_load = _compute_loadings(Xg_tr_s, U_tr)  # (gene_dim, k)
+    roi_load = _compute_loadings(Xb_tr_s, V_tr)   # (brain_dim, k)
+
+    # Add interpretable top features per component (loadings + weights)
+    top_gene_loading = {}
+    top_roi_loading = {}
+    top_gene_weight = {}
+    top_roi_weight = {}
     for c in range(kk):
-        top_gene[str(c)] = top_feats(Wx[:, c], gene_names, k=min(10, Wx.shape[0]))
-        top_roi[str(c)] = top_feats(Wy[:, c], roi_names, k=min(10, Wy.shape[0]))
-    results["train_fit"]["top_gene"] = top_gene
-    results["train_fit"]["top_roi"] = top_roi
+        top_gene_loading[str(c)] = top_feats(gene_load[:, c], gene_names, k=min(10, gene_load.shape[0]))
+        top_roi_loading[str(c)] = top_feats(roi_load[:, c], roi_names, k=min(10, roi_load.shape[0]))
+        top_gene_weight[str(c)] = top_feats(Wx[:, c], gene_names, k=min(10, Wx.shape[0]))
+        top_roi_weight[str(c)] = top_feats(Wy[:, c], roi_names, k=min(10, Wy.shape[0]))
+
+    # Backward-compatible keys: keep the original names, but now they refer to LOADINGS.
+    results["train_fit"]["top_gene"] = top_gene_loading
+    results["train_fit"]["top_roi"] = top_roi_loading
+    results["train_fit"]["top_gene_weight"] = top_gene_weight
+    results["train_fit"]["top_roi_weight"] = top_roi_weight
+    results["train_fit"]["note_top_features"] = "top_gene/top_roi are LOADINGS (correlations), not beta weights. See *_weight for raw weights."
 
     out_json = Path(args.out_json)
     stem = out_json.stem
@@ -242,6 +286,8 @@ def main():
     np.save(out_json.parent / f"{stem}_V_holdout.npy", V_ho.astype(np.float32))
     np.save(out_json.parent / f"{stem}_W_gene.npy", Wx.astype(np.float32))
     np.save(out_json.parent / f"{stem}_W_fmri.npy", Wy.astype(np.float32))
+    np.save(out_json.parent / f"{stem}_L_gene.npy", gene_load.astype(np.float32))
+    np.save(out_json.parent / f"{stem}_L_fmri.npy", roi_load.astype(np.float32))
     np.save(out_json.parent / f"{stem}_train_ids.npy", ids[train_idx].astype(object))
     np.save(out_json.parent / f"{stem}_holdout_ids.npy", ids[hold_idx].astype(object))
     results["artifacts"] = {
@@ -251,6 +297,8 @@ def main():
         "V_holdout": f"{stem}_V_holdout.npy",
         "W_gene": f"{stem}_W_gene.npy",
         "W_fmri": f"{stem}_W_fmri.npy",
+        "L_gene": f"{stem}_L_gene.npy",
+        "L_fmri": f"{stem}_L_fmri.npy",
         "train_ids": f"{stem}_train_ids.npy",
         "holdout_ids": f"{stem}_holdout_ids.npy",
     }

@@ -23,5 +23,12 @@ __pycache__/
 gene-brain-cca-2/derived/**/*.npy
 gene-brain-cca-2/derived/**/*.npz
 
+# tabular overlap matrices / matched IID outputs (large, regenerate)
+derived_tabular_overlap/
+derived_tabular_overlap_v2/
+
+# derived results and figures (can be regenerated)
+gene-brain-cca-2/derived/**
+
 # final_report: allow all (PDFs, markdown, Python scripts)
 !final_report/**

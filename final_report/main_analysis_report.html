@@ -89,7 +89,9 @@ gene embeddings from DNABERT-2.
 
 **Cohort:** N=4218 subjects (Train: 3374, Holdout: 844)  
 **Gene Features:** 111 psychiatric risk genes → 85,248-D embeddings (768-D × 111 genes)  
-**Brain Features:** Schaefer cortical parcellations with Yeo-7 and Yeo-17 network-level summaries
+**Brain Features:** Static Functional Connectivity (Fisher z-transformed). Upper Triangle Only (Leakage-safe feature selection). Schaefer cortical parcellations with Yeo-7 and Yeo-17 network-level summaries.
+
+**Interpretation note:** Brain maps show Loadings (Correlations), not Beta weights, to reveal true biological contributors (e.g., DMN Core vs. DMPFC subsystem).
 
 ---
 
@@ -148,18 +150,18 @@ achieving the strongest gene-brain coupling signal.
 The following genes show the strongest associations in the first canonical component:
 
 ### Positive Weights (Top 5)
-1. **NR3C1** (weight: 0.3732)
-2. **CTNND2** (weight: 0.3362)
-3. **KCNK2** (weight: 0.3240)
-4. **CSMD1** (weight: 0.3025)
-5. **HSPA1L** (weight: 0.1631)
+1. **NR3C1** (weight: 0.3786)
+2. **CTNND2** (weight: 0.3522)
+3. **CSMD1** (weight: 0.3104)
+4. **KCNK2** (weight: 0.3026)
+5. **GRM7** (weight: 0.1710)
 
 ### Negative Weights (Top 5)
-1. **ZNF165** (weight: -0.3302)
-2. **CHRM2** (weight: -0.2966)
-3. **CAT** (weight: -0.2956)
-4. **GABRA1** (weight: -0.1998)
-5. **OSTM1** (weight: -0.1631)
+1. **ZNF165** (weight: -0.3333)
+2. **CAT** (weight: -0.2960)
+3. **CHRM2** (weight: -0.2945)
+4. **GABRA1** (weight: -0.2072)
+5. **OSTM1** (weight: -0.1844)
 
 ---
 
@@ -172,6 +174,8 @@ The following genes show the strongest associations in the first canonical compo
 
 **Brain Features:**
 - Schaefer-400 cortical parcellation → Yeo-7/17 network-level functional connectivity
+- Static Functional Connectivity (Fisher z-transformed).
+- Upper Triangle Only (Leakage-safe feature selection).
 - Residualized for age/sex on training set only (leakage-free)
 - Z-scored and standardized
 
@@ -180,6 +184,9 @@ The following genes show the strongest associations in the first canonical compo
 - Gene PCA: 64-D (Schaefer-7), 128-D (Schaefer-17)
 - 5-fold cross-validation, 20% holdout set
 - Evaluation: first canonical correlation on holdout (r_holdout_cc1)
+
+**Cross-modality stability note (for tabular MRI):**
+- Unlike fMRI, sMRI (volume) and dMRI (microstructure) are stable traits, likely yielding higher coupling stability (r_holdout) than fluctuating BOLD signals.
 
 ---
 
