@@ -46,22 +46,22 @@ submit_jobs() {
   JOB1=$(sbatch --parsable \
     --export=ALL,STRAT_N_PERM="$n_perm",STRAT_N_FOLDS="$n_folds",STRAT_GENE_PCA_DIMS="$gene_dims",STRAT_C_VALUES="$c_values",STRAT_N_COMPONENTS="$n_components",STRAT_HOLDOUT_FRAC="$holdout_frac" \
     slurm/40_stratified_schaefer7.sbatch)
-  echo "Submitted Schaefer7:  JobID=$JOB1"
+echo "Submitted Schaefer7:  JobID=$JOB1"
 
   JOB2=$(sbatch --parsable \
     --export=ALL,STRAT_N_PERM="$n_perm",STRAT_N_FOLDS="$n_folds",STRAT_GENE_PCA_DIMS="$gene_dims",STRAT_C_VALUES="$c_values",STRAT_N_COMPONENTS="$n_components",STRAT_HOLDOUT_FRAC="$holdout_frac" \
     slurm/41_stratified_schaefer17.sbatch)
-  echo "Submitted Schaefer17: JobID=$JOB2"
+echo "Submitted Schaefer17: JobID=$JOB2"
 
   JOB3=$(sbatch --parsable \
     --export=ALL,STRAT_N_PERM="$n_perm",STRAT_N_FOLDS="$n_folds",STRAT_GENE_PCA_DIMS="$gene_dims",STRAT_C_VALUES="$c_values",STRAT_N_COMPONENTS="$n_components",STRAT_HOLDOUT_FRAC="$holdout_frac" \
     slurm/42_stratified_smri_tabular.sbatch)
-  echo "Submitted sMRI:       JobID=$JOB3"
+echo "Submitted sMRI:       JobID=$JOB3"
 
   JOB4=$(sbatch --parsable \
     --export=ALL,STRAT_N_PERM="$n_perm",STRAT_N_FOLDS="$n_folds",STRAT_GENE_PCA_DIMS="$gene_dims",STRAT_C_VALUES="$c_values",STRAT_N_COMPONENTS="$n_components",STRAT_HOLDOUT_FRAC="$holdout_frac" \
     slurm/43_stratified_dmri_tabular.sbatch)
-  echo "Submitted dMRI:       JobID=$JOB4"
+echo "Submitted dMRI:       JobID=$JOB4"
 
   export ALL_JOBS="$JOB1,$JOB2,$JOB3,$JOB4"
 }
