@@ -67,17 +67,17 @@ This pipeline implements a rigorous framework for linking genetic embeddings (fr
 │  ──────                           ──────────                    ──────────      │
 │                                                                                 │
 │  ┌─────────────┐                  ┌─────────────────┐                           │
-│  │ FM Models   │                  │ Stratified SCCA │     ┌──────────────────┐ │
-│  │ ─────────── │                  │                 │     │ Per cell:        │ │
-│  │ • DNABERT2  │──┐               │  ┌───────────┐  │     │ • Holdout r      │ │
-│  │ • Evo2      │  │               │  │ MDD Cohort│  │     │ • Perm test      │ │
-│  │ • HyenaDNA  │  │               │  │ (N~1,700) │  │     │   (1000 perms)   │ │
-│  │ • Caduceus  │  │               │  └───────────┘  │     │ • Weight cosine  │ │
-│  └─────────────┘  │               │                 │     └──────────────────┘ │
+│  │ FM Models   │                  │ Stratified SCCA │     ┌──────────────────┐  │
+│  │ ─────────── │                  │                 │     │ Per cell:        │  │
+│  │ • DNABERT2  │──┐               │  ┌───────────┐  │     │ • Holdout r      │  │
+│  │ • Evo2      │  │               │  │ MDD Cohort│  │     │ • Perm test      │  │
+│  │ • HyenaDNA  │  │               │  │ (N~1,700) │  │     │   (1000 perms)   │  │
+│  │ • Caduceus  │  │               │  └───────────┘  │     │ • Weight cosine  │  │
+│  └─────────────┘  │               │                 │     └──────────────────┘  │
 │                   ├──────────────>│  ┌───────────┐  │──────────────────────────>│
 │  ┌─────────────┐  │               │  │ Ctrl Cohort│ │                           │
-│  │ Brain Mods  │  │               │  │ (N~1,700) │  │     4 FM × 4 modalities  │
-│  │ ─────────── │──┘               │  └───────────┘  │     = 16 experiments     │
+│  │ Brain Mods  │  │               │  │ (N~1,700) │  │     4 FM × 4 modalities   │
+│  │ ─────────── │──┘               │  └───────────┘  │     = 16 experiments      │
 │  │ • Schaefer7 │                  │                 │                           │
 │  │ • Schaefer17│                  │ Leakage-safe:   │     Status: 13/16 ✅      │
 │  │ • sMRI      │                  │ residualize on  │     Evo2: 1/4 complete    │
@@ -100,10 +100,10 @@ This pipeline implements a rigorous framework for linking genetic embeddings (fr
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ STAGE 1: Unsupervised Embedding (CCA / SCCA)                           │
+│ STAGE 1: Unsupervised Embedding (CCA / SCCA)                            │
 │                                                                         │
 │   Gene Features ──┐                                                     │
-│   (N × p_gene)    ├──> CCA ──> Canonical Variates (U, V)               │
+│   (N × p_gene)    ├──> CCA ──> Canonical Variates (U, V)                │
 │   Brain Features ─┘            "Joint Embeddings"                       │
 │   (N × p_brain)                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -112,7 +112,7 @@ This pipeline implements a rigorous framework for linking genetic embeddings (fr
 ┌─────────────────────────────────────────────────────────────────────────┐
 │ STAGE 2: Supervised Prediction                                          │
 │                                                                         │
-│   Canonical Variates ──> Logistic Regression / MLP ──> Clinical Labels │
+│   Canonical Variates ──> Logistic Regression / MLP ──> Clinical Labels  │
 │   (U, V)                                                  (e.g., MDD)   │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
