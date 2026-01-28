@@ -54,11 +54,25 @@ def model_mlp():
         ),
     )
 
-def _build_cov(age: np.ndarray, sex: np.ndarray) -> np.ndarray:
+def _build_cov(age: np.ndarray, sex: np.ndarray, extra: np.ndarray | None = None) -> np.ndarray:
     return np.column_stack(
-        [np.ones(len(age), dtype=np.float64), age.astype(np.float64), sex.astype(np.float64)]
+        [
+            np.ones(len(age), dtype=np.float64),
+            age.astype(np.float64),
+            sex.astype(np.float64),
+        ]
+        + ([] if extra is None else [_as_2d(extra).astype(np.float64)])
     )
 
+def _as_2d(x: np.ndarray | None) -> np.ndarray | None:
+    if x is None:
+        return None
+    x = np.asarray(x)
+    if x.ndim == 1:
+        return x.reshape(-1, 1)
+    if x.ndim == 2:
+        return x
+    raise ValueError(f"cov_extra must be 1D or 2D, got shape={x.shape}")
 
 def _residualize_train_test(
     X_tr: np.ndarray,
@@ -67,17 +81,19 @@ def _residualize_train_test(
     sex_tr: np.ndarray,
     age_te: np.ndarray,
     sex_te: np.ndarray,
+    extra_tr: np.ndarray | None = None,
+    extra_te: np.ndarray | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
-    Fit residualization (intercept+age+sex) on TRAIN only; apply to train and test.
+    Fit residualization (intercept+age+sex+extra) on TRAIN only; apply to train and test.
     """
-    C_tr = _build_cov(age_tr, sex_tr)
+    C_tr = _build_cov(age_tr, sex_tr, extra_tr)
     CtC = C_tr.T @ C_tr
     CtX = C_tr.T @ X_tr.astype(np.float64, copy=False)
     B = np.linalg.solve(CtC, CtX)
     X_tr_r = X_tr.astype(np.float64, copy=False) - (C_tr @ B)
 
-    C_te = _build_cov(age_te, sex_te)
+    C_te = _build_cov(age_te, sex_te, extra_te)
     X_te_r = X_te.astype(np.float64, copy=False) - (C_te @ B)
 
     return X_tr_r.astype(np.float32, copy=False), X_te_r.astype(np.float32, copy=False)
@@ -241,6 +257,7 @@ def main():
     ap.add_argument("--x-fmri-raw", default=None, help="Raw aligned fMRI matrix (N×D)")
     ap.add_argument("--cov-age", default=None, help="Aligned age covariate (N,)")
     ap.add_argument("--cov-sex", default=None, help="Aligned sex covariate (N,)")
+    ap.add_argument("--cov-extra", default=None, help="Optional extra covariate (e.g., eTIV) (N,)")
     ap.add_argument("--ids", default=None, help="Optional ids_common.npy to save train/holdout IDs")
 
     # Legacy (not fully leakage-proof unless these were built train-only):
@@ -287,6 +304,7 @@ def main():
         Xb_raw = np.load(args.x_fmri_raw, mmap_mode="r")
         age = np.load(args.cov_age).astype(np.float32)
         sex = np.load(args.cov_sex).astype(np.float32)
+        extra = np.load(args.cov_extra).astype(np.float32) if args.cov_extra else None
 
         if Xg_wide.shape[0] != len(y) or Xb_raw.shape[0] != len(y):
             raise SystemExit(
@@ -301,6 +319,8 @@ def main():
             sex[train_idx],
             age[hold_idx],
             sex[hold_idx],
+            extra_tr=extra[train_idx] if extra is not None else None,
+            extra_te=extra[hold_idx] if extra is not None else None,
         )
         Xg_tr_r, Xg_ho_r = _residualize_train_test(
             np.asarray(Xg_wide[train_idx], dtype=np.float32),
@@ -309,6 +329,8 @@ def main():
             sex[train_idx],
             age[hold_idx],
             sex[hold_idx],
+            extra_tr=extra[train_idx] if extra is not None else None,
+            extra_te=extra[hold_idx] if extra is not None else None,
         )
 
         # Train-only PCA on gene-wide

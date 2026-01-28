@@ -5,7 +5,9 @@
 #SBATCH --exclude=node1,node3
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
-#SBATCH --time=08:00:00
+#SBATCH --time=24:00:00
+#SBATCH --requeue
+#SBATCH --signal=B:USR1@300
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --error=logs/%x-%j.err
 
@@ -41,6 +43,13 @@ export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-1}"
 export MKL_NUM_THREADS="$OMP_NUM_THREADS"
 export OPENBLAS_NUM_THREADS="$OMP_NUM_THREADS"
 export NUMEXPR_NUM_THREADS="$OMP_NUM_THREADS"
+
+# Checkpoint directory on /scratch
+export SCRATCH_CHECKPOINT_DIR="/scratch/connectome/${USER}/stratified_checkpoints"
+mkdir -p "$SCRATCH_CHECKPOINT_DIR"
+
+# Handle timeout warning to encourage a final checkpoint
+trap 'echo "[signal] USR1 received - checkpoint will be saved by Python"' USR1
 
 # Conda activation
 export PS1="${PS1-}"
@@ -109,6 +118,8 @@ srun -n 1 python scripts/run_stratified_coupling_benchmark.py \
   --c-values "$C_VALUES" \
   --n-components "$N_COMPONENTS" \
   --n-perm "$N_PERM" \
+  --checkpoint-dir "$SCRATCH_CHECKPOINT_DIR" \
+  --checkpoint-freq 50 \
   $EXTRA_ARG
 
 echo "============================================================"

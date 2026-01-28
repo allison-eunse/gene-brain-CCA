@@ -22,6 +22,7 @@ import argparse
 import json
 import os
 import shutil
+import signal
 import sys
 from datetime import datetime
 from itertools import product
@@ -115,6 +116,34 @@ def compute_canonical_correlations(U: np.ndarray, V: np.ndarray, k: int) -> np.n
     k = min(k, U.shape[1], V.shape[1])
     r = np.array([np.corrcoef(U[:, i], V[:, i])[0, 1] for i in range(k)])
     return r
+
+
+def _save_checkpoint(path: Path, data: list[float]) -> None:
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp_path, "wb") as f:
+        np.save(f, np.array(data, dtype=np.float32))
+    tmp_path.replace(path)
+
+
+def _load_checkpoint(path: Path) -> list[float]:
+    return list(np.load(path))
+
+
+def _write_checkpoint_meta(path: Path, meta: dict) -> None:
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp_path, "w") as f:
+        json.dump(meta, f, indent=2)
+    tmp_path.replace(path)
+
+
+def _load_checkpoint_meta(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return None
 
 
 def _fit_and_score_with_weights(
@@ -353,15 +382,61 @@ def run_permutation_test(
     c1: float,
     c2: float,
     n_components: int,
+    checkpoint_path: Path | None = None,
+    checkpoint_meta: Path | None = None,
+    checkpoint_freq: int = 50,
+    checkpoint_backup_path: Path | None = None,
 ) -> dict:
     """
     Permutation test: shuffle labels, run stratified CCA, compute r_mdd - r_ctrl.
     Returns null distribution and p-value.
     """
     rng = np.random.RandomState(seed)
-    null_diffs = []
+    null_diffs: list[float] = []
+    start_idx = 0
 
-    for perm_i in range(n_perm):
+    meta_current = {
+        "seed": seed,
+        "n_perm": n_perm,
+        "labels_shape": list(labels.shape),
+        "gene_pca_dim": gene_pca_dim,
+        "method": method,
+        "c1": c1,
+        "c2": c2,
+    }
+
+    if checkpoint_path and checkpoint_meta:
+        meta_prev = _load_checkpoint_meta(checkpoint_meta)
+        if meta_prev == meta_current and checkpoint_path.exists():
+            null_diffs = _load_checkpoint(checkpoint_path)
+            start_idx = len(null_diffs)
+            if start_idx > n_perm:
+                print(
+                    f"  [resume] Checkpoint has {start_idx} > n_perm={n_perm}, restarting",
+                    flush=True,
+                )
+                null_diffs = []
+                start_idx = 0
+            else:
+                print(f"  [resume] Loaded {start_idx} permutations from checkpoint", flush=True)
+                for _ in range(start_idx):
+                    rng.permutation(labels)
+        else:
+            if meta_prev is not None:
+                print("  [resume] Checkpoint metadata mismatch, starting fresh", flush=True)
+
+        _write_checkpoint_meta(checkpoint_meta, meta_current)
+
+    def _handle_usr1(signum: int, frame: object | None) -> None:
+        if checkpoint_path:
+            _save_checkpoint(checkpoint_path, null_diffs)
+        if checkpoint_meta:
+            _write_checkpoint_meta(checkpoint_meta, meta_current)
+        print("  [signal] Checkpoint saved after USR1", flush=True)
+
+    signal.signal(signal.SIGUSR1, _handle_usr1)
+
+    for perm_i in range(start_idx, n_perm):
         if (perm_i + 1) % 100 == 0:
             print(f"  [perm] {perm_i + 1}/{n_perm}", flush=True)
 
@@ -391,8 +466,24 @@ def run_permutation_test(
         )
         null_diffs.append(r_mdd - r_ctrl)
 
+        if checkpoint_path and (perm_i + 1) % checkpoint_freq == 0:
+            _save_checkpoint(checkpoint_path, null_diffs)
+            if checkpoint_meta:
+                _write_checkpoint_meta(checkpoint_meta, meta_current)
+            print(f"  [checkpoint] Saved at {perm_i + 1}/{n_perm}", flush=True)
+
     null_diffs = np.array(null_diffs)
     p_value = float(np.mean(np.abs(null_diffs) >= np.abs(observed_diff)))
+
+    if checkpoint_path and checkpoint_path.exists():
+        if checkpoint_backup_path:
+            shutil.copy2(checkpoint_path, checkpoint_backup_path)
+            if checkpoint_meta and checkpoint_meta.exists():
+                shutil.copy2(checkpoint_meta, checkpoint_backup_path.with_suffix(".json"))
+        checkpoint_path.unlink()
+    if checkpoint_meta and checkpoint_meta.exists():
+        checkpoint_meta.unlink()
+
     return {
         "observed_diff": observed_diff,
         "null_mean": float(np.mean(null_diffs)),
@@ -483,6 +574,8 @@ def main():
     ap.add_argument("--c-values", default="0.1,0.3,0.5", help="Comma-separated SCCA c values")
     ap.add_argument("--n-components", type=int, default=10)
     ap.add_argument("--n-perm", type=int, default=1000, help="Number of permutations")
+    ap.add_argument("--checkpoint-dir", default=None, help="Directory for permutation checkpoints")
+    ap.add_argument("--checkpoint-freq", type=int, default=50, help="Checkpoint frequency (perms)")
     ap.add_argument("--skip-perm", action="store_true", help="Skip permutation testing")
     args = ap.parse_args()
 
@@ -591,6 +684,10 @@ def main():
         "ctrl_best_config": ctrl_results["best_config"]["config"],
     }
 
+    # Output directory (also used for checkpoint backups)
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     # Permutation test
     perm_results = None
     if not args.skip_perm:
@@ -600,6 +697,16 @@ def main():
             best = mdd_results["best_config"]
         else:
             best = ctrl_results["best_config"]
+
+        checkpoint_root = args.checkpoint_dir or os.environ.get(
+            "SCRATCH_CHECKPOINT_DIR",
+            f"/scratch/connectome/{os.environ.get('USER','unknown')}/stratified_checkpoints",
+        )
+        checkpoint_dir = Path(checkpoint_root)
+        checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        checkpoint_path = checkpoint_dir / f"perm_{args.modality_tag}.npy"
+        checkpoint_meta = checkpoint_dir / f"perm_{args.modality_tag}.json"
+        checkpoint_backup_path = out_dir / f"perm_checkpoint_{args.modality_tag}.npy"
 
         perm_results = run_permutation_test(
             Xg=Xg, Xb=Xb, age=age, sex=sex, extra=extra, labels=labels,
@@ -613,16 +720,16 @@ def main():
             c1=best["c1"],
             c2=best["c2"],
             n_components=args.n_components,
+            checkpoint_path=checkpoint_path,
+            checkpoint_meta=checkpoint_meta,
+            checkpoint_freq=args.checkpoint_freq,
+            checkpoint_backup_path=checkpoint_backup_path,
         )
         comparison["perm_p_value"] = perm_results["p_value"]
         comparison["perm_null_mean"] = perm_results["null_mean"]
         comparison["perm_null_std"] = perm_results["null_std"]
     else:
         print("[6/6] Skipping permutation test")
-
-    # Save outputs
-    out_dir = Path(args.out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
 
     # Save MDD results
     mdd_out = out_dir / f"stratified_{args.modality_tag}_mdd"

@@ -23,21 +23,30 @@ echo "============================================================"
 
 # Jobs to monitor (DNABERT2 + Evo2)
 JOBS_TO_MONITOR=(82462 82463 82464 82465 82466 82467 82468 82469)
+FM_MODELS=("dnabert2" "evo2")
+MODALITIES=("schaefer7" "schaefer17" "smri" "dmri")
 
 check_all_done() {
-    for job in "${JOBS_TO_MONITOR[@]}"; do
-        logfile="logs/strat_fm-${job}.out"
-        if [ -f "$logfile" ]; then
-            if ! grep -q "Done:" "$logfile" 2>/dev/null; then
+    for fm in "${FM_MODELS[@]}"; do
+        for mod in "${MODALITIES[@]}"; do
+            result="gene-brain-cca-2/derived/stratified_fm/stratified_comparison_${fm}_${mod}.json"
+            if [ ! -f "$result" ]; then
                 echo "false"
                 return
             fi
-        else
-            echo "false"
+        done
+    done
+    echo "true"
+}
+
+check_any_failed() {
+    for f in logs/strat_fm-*.err; do
+        if [ -s "$f" ] && grep -qi "TIME LIMIT|CANCELLED|ERROR|Traceback" "$f"; then
+            echo "true"
             return
         fi
     done
-    echo "true"
+    echo "false"
 }
 
 print_status() {
@@ -78,6 +87,9 @@ echo "============================================================"
 
 while [ "$(check_all_done)" = "false" ]; do
     print_status
+    if [ "$(check_any_failed)" = "true" ]; then
+        echo "  [warn] Detected errors in logs/strat_fm-*.err (check files)."
+    fi
     echo ""
     echo "  Sleeping 5 minutes... (Ctrl+C to abort)"
     sleep 300  # Check every 5 minutes
