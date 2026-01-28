@@ -8,12 +8,18 @@
 
 Before you start, here's what we found:
 
-| Experiment | Gene Representation | Best AUC | Outcome |
-|------------|---------------------|----------|---------|
-| **Mean Pooling** | 768-D → 1 scalar/gene | 0.588 | Modest prediction |
-| **Max Pooling** | 768-D → 1 scalar/gene | 0.505 | Near chance |
+| Phase | Description | Best Metric | Outcome |
+|-------|-------------|-------------|---------|
+| **Phase 1 (Mean Pool)** | 768-D → 1 scalar/gene | AUC 0.588 | Modest prediction |
+| **Phase 1 (Max Pool)** | 768-D → 1 scalar/gene | AUC 0.505 | Near chance |
+| **Phase 2 (Full Embed)** | 85K → PCA 512 | **AUC 0.762** 🏆 | Best result |
+| **Phase 3 (Stratified)** | 4 FM × 4 modalities | Δr ≈ 0 | No MDD-specific coupling |
+| **Phase 3 (sMRI/dMRI)** | Brain → MDD | AUC 0.56 | Structural MRI fails |
 
-**Key finding:** Scalar pooling loses too much information. See `gene-brain-cca-2/` for full embeddings approach (AUC 0.762).
+**Key findings:**
+1. Scalar pooling loses too much information - use full embeddings (AUC 0.762)
+2. Gene-brain coupling does NOT differ between MDD and Controls
+3. Structural MRI (sMRI/dMRI) provides no MDD prediction signal
 
 ---
 
@@ -224,6 +230,26 @@ python -c "import numpy as np; print(np.load('derived_mean_pooling/aligned_pca/X
 
 ---
 
+---
+
+## Phase 3: Stratified Analysis (Optional)
+
+If you want to test whether gene-brain coupling differs between MDD and Controls:
+
+```bash
+# Run stratified benchmark for a specific FM model and modality
+sbatch slurm/51_stratified_fm.sbatch  # Edit to select FM_MODEL and MODALITY
+
+# After completion, generate visualizations
+python scripts/plot_stratified_results.py \
+  --derived-dir gene-brain-cca-2/derived/stratified_fm \
+  --out-dir figures/stratified
+```
+
+**Result**: No significant MDD-specific coupling was found for any FM model or modality.
+
+---
+
 **Need more help?** See `README.md` for full documentation or `INDEX.md` for navigation guide.
 
-**Last updated:** January 14, 2026
+**Last updated:** January 28, 2026

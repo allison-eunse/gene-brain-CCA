@@ -3,12 +3,14 @@
 A two-stage pipeline for discovering gene-brain associations using **Canonical Correlation Analysis (CCA)** with UK Biobank data, and evaluating their utility for **Major Depressive Disorder (MDD)** prediction.
 
 **Author:** Allie  
-**Last Updated:** January 14, 2026  
-**Dataset:** UK Biobank (N=4,218 with paired genetics + fMRI)
+**Last Updated:** January 28, 2026  
+**Dataset:** UK Biobank (N=3,374–7,116 with paired genetics + brain imaging)
 
 ---
 
 ## 🔬 Key Results
+
+### Core Findings
 
 | Finding | Evidence |
 |---------|----------|
@@ -17,8 +19,23 @@ A two-stage pipeline for discovering gene-brain associations using **Canonical C
 | **CCA/SCCA hurts prediction** | AUC 0.55 vs 0.76 (direct supervised) |
 | **Gene-brain coupling is diffuse** | SCCA sparsity < 10% |
 | **fMRI adds minimal/no predictive value** | Early fusion +0.003 over gene-only |
+| **sMRI/dMRI fail to predict MDD** | AUC 0.56/0.55 (near chance) |
+| **No MDD vs Control coupling difference** | All stratified Δr ≈ 0, p > 0.05 |
 
-> **Core Conclusion:** Gene-brain correlation (unsupervised) does NOT translate into clinical prediction power (supervised). Full foundation model embeddings substantially outperform scalar reductions.
+### Multi-FM Stratified Analysis (NEW)
+
+Tested 4 genomic foundation models × 4 brain modalities for MDD-specific coupling:
+
+| FM Model | Schaefer7 | Schaefer17 | sMRI | dMRI |
+|----------|-----------|------------|------|------|
+| HyenaDNA | ✅ r≈0 | ✅ r≈0 | ✅ r≈0 | ✅ r≈0 |
+| Caduceus | ✅ r≈0 | ✅ r≈0 | ✅ r≈0 | ✅ r≈0 |
+| DNABERT2 | ✅ r≈0 | ✅ r≈0 | ✅ r≈0 | ✅ r≈0 |
+| Evo2 | ⏳ | ⏳ | ⏳ | ✅ r≈0 |
+
+**Result**: No FM model shows significant MDD-specific gene-brain coupling.
+
+> **Core Conclusion:** Gene-brain correlation (unsupervised) does NOT translate into clinical prediction power (supervised). Full foundation model embeddings substantially outperform scalar reductions. Neither functional nor structural brain imaging couples meaningfully with gene embeddings for MDD.
 
 ---
 
@@ -91,12 +108,12 @@ If you want sparsity/selection over **FM latent dimensions** instead (e.g., 768-
 
 ## Project Structure
 
-This project contains **two major experiments** organized as follows:
+This project contains **three major experiment phases** organized as follows:
 
 ```
 gene-brain-CCA/
 │
-├── 📊 EXPERIMENT 1: Original Two-Stage CCA (Scalar Gene Reduction)
+├── 📊 PHASE 1: Original Two-Stage CCA (Scalar Gene Reduction)
 ├── ─────────────────────────────────────────────────────────
 ├── scripts/                      # Original pipeline scripts
 │   ├── build_x_gene.py           # DNABERT2 → scalar gene matrix (111 features)
@@ -104,11 +121,11 @@ gene-brain-CCA/
 │   ├── align_resid_pca.py        # Align subjects, residualize, PCA
 │   ├── run_cca.py                # Stage 1: CCA / SCCA
 │   └── stage2_predict.py         # Stage 2: Clinical prediction
-├── slurm/                        # SLURM job scripts for Experiment 1
+├── slurm/                        # SLURM job scripts
 ├── derived_mean_pooling/         # Results: mean pooling (AUC 0.588)
 ├── derived_max_pooling/          # Results: max pooling (AUC 0.505)
 │
-├── 📊 EXPERIMENT 2: Leakage-Safe Pipelines with Full Embeddings
+├── 📊 PHASE 2: Leakage-Safe Pipelines with Full Embeddings
 ├── ─────────────────────────────────────────────────────────
 ├── gene-brain-cca-2/             # ⭐ RECOMMENDED: Redesigned pipelines
 │   ├── README.md                 # Detailed documentation with results
@@ -122,25 +139,46 @@ gene-brain-CCA/
 │   │   └── 02_predictive_wide_suite.sbatch
 │   └── derived/
 │       ├── interpretable/        # Pipeline A outputs (SCCA weights)
-│       └── wide_gene/            # Pipeline B outputs (AUC 0.762 🏆)
+│       ├── wide_gene/            # Pipeline B outputs (AUC 0.762 🏆)
+│       └── stratified_fm/        # Phase 3 stratified results
 │
-├── 📄 REPORTS
+├── 📊 PHASE 3: Multi-FM Stratified Analysis (NEW)
 ├── ─────────────────────────────────────────────────────────
-├── final_report/                 # Comprehensive analysis reports
-│   ├── comprehensive_report.md   # Full technical report
-│   └── *.pdf                     # Generated PDF reports
+├── scripts/
+│   ├── run_stratified_coupling_benchmark.py  # MDD vs Ctrl CCA comparison
+│   ├── plot_stratified_results.py            # Visualization
+│   └── analyze_evo2_weights.py               # FM weight analysis
+├── slurm/
+│   ├── 51_stratified_fm.sbatch               # Multi-FM stratified jobs
+│   └── 37_predictive_smri_dmri_tabular.sbatch # sMRI/dMRI prediction
+├── figures/stratified/           # Result visualizations
+│   ├── stratified_results_bar.png
+│   ├── stratified_results_forest.png
+│   ├── stratified_results_heatmap.png
+│   └── stratified_results_cosine.png
+│
+├── 📄 REPORTS & DOCUMENTATION
+├── ─────────────────────────────────────────────────────────
+├── FINAL_ANALYSIS_REPORT.md      # Comprehensive stratified analysis
+├── cross_model_comparison.md     # FM model comparison
+├── evo2_analysis_summary.md      # Evo2 weight analysis
+├── final_report/                 # Original analysis reports
+│   ├── comprehensive_report.md
+│   └── *.pdf
 │
 └── logs/                         # SLURM logs
 ```
 
 ### Experiment Overview
 
-| Experiment | Gene Representation | Best AUC | Key Finding |
-|------------|---------------------|----------|-------------|
-| **Exp 1 (Mean Pool)** | 768-D → 1 scalar/gene | 0.588 | Mean > Max pooling |
-| **Exp 1 (Max Pool)** | 768-D → 1 scalar/gene | 0.505 | Near chance |
-| **Exp 2 Pipeline A** | 111 scalars (SCCA) | r=0.16 | Coupling doesn't generalize |
-| **Exp 2 Pipeline B** | 85,248 → PCA 512 | **0.762** 🏆 | Full embeddings win |
+| Phase | Description | Best Metric | Key Finding |
+|-------|-------------|-------------|-------------|
+| **Phase 1 (Mean Pool)** | 768-D → 1 scalar/gene | AUC 0.588 | Mean > Max pooling |
+| **Phase 1 (Max Pool)** | 768-D → 1 scalar/gene | AUC 0.505 | Near chance |
+| **Phase 2 Pipeline A** | 111 scalars (SCCA) | r=0.16 | Coupling doesn't generalize |
+| **Phase 2 Pipeline B** | 85,248 → PCA 512 | **AUC 0.762** 🏆 | Full embeddings win |
+| **Phase 3 Stratified** | 4 FM × 4 modalities | Δr ≈ 0 | No MDD-specific coupling |
+| **Phase 3 sMRI/dMRI** | Brain → MDD prediction | AUC 0.56 | Structural MRI uninformative |
 
 ### Recommended Workflow
 

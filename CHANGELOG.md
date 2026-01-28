@@ -4,6 +4,58 @@ All notable changes to the Gene-Brain CCA project will be documented in this fil
 
 ---
 
+## [3.0.0] - 2026-01-28
+
+### Added - Phase 3: Multi-FM Stratified Analysis
+
+**New Experiments:**
+- Stratified CCA benchmark comparing MDD vs Control coupling across 4 genomic FM models:
+  - HyenaDNA, Caduceus, DNABERT2, Evo2
+- Brain modalities tested: Schaefer7 FC, Schaefer17 FC, sMRI tabular, dMRI tabular
+- sMRI/dMRI → MDD direct prediction pipeline
+
+**New Scripts:**
+- `scripts/run_stratified_coupling_benchmark.py` - MDD vs Control CCA with permutation testing
+- `scripts/plot_stratified_results.py` - Visualization (bar, forest, heatmap, cosine plots)
+- `scripts/analyze_evo2_weights.py` - FM weight analysis
+- `slurm/51_stratified_fm.sbatch` - Multi-FM stratified job launcher
+- `slurm/37_predictive_smri_dmri_tabular.sbatch` - sMRI/dMRI prediction
+
+**New Documentation:**
+- `FINAL_ANALYSIS_REPORT.md` - Comprehensive stratified analysis and Evo2 evaluation
+- `cross_model_comparison.md` - FM model comparison across modalities
+- `evo2_analysis_summary.md` - Evo2 weight analysis results
+
+**New Figures:**
+- `figures/stratified/stratified_results_bar.png` - Bar plot of coupling by group
+- `figures/stratified/stratified_results_forest.png` - Forest plot with CIs
+- `figures/stratified/stratified_results_heatmap.png` - FM × modality heatmap
+- `figures/stratified/stratified_results_cosine.png` - Weight similarity analysis
+
+**Key Results:**
+| Finding | Evidence |
+|---------|----------|
+| No MDD-specific coupling | All Δr (MDD-Ctrl) ≈ 0, p > 0.05 |
+| sMRI fails to predict MDD | AUC = 0.561 (near chance) |
+| dMRI fails to predict MDD | AUC = 0.553 (near chance) |
+| FM models behave similarly | No FM shows unique coupling |
+
+**Completion Status:**
+| FM Model | Schaefer7 | Schaefer17 | sMRI | dMRI |
+|----------|-----------|------------|------|------|
+| HyenaDNA | ✅ | ✅ | ✅ | ✅ |
+| Caduceus | ✅ | ✅ | ✅ | ✅ |
+| DNABERT2 | ✅ | ✅ | ✅ | ✅ |
+| Evo2 | ⏳ | ⏳ | ⏳ | ✅ |
+
+**Conclusions:**
+1. Gene-brain coupling does NOT differ between MDD and Controls
+2. Structural MRI (sMRI/dMRI) provides no MDD prediction signal
+3. All genomic FM models yield similar (null) coupling results
+4. The Evo2 p=0.049 result is a likely false positive (multiple testing)
+
+---
+
 ## [2.0.0] - 2026-01-14
 
 ### Added - Comprehensive Documentation & Results

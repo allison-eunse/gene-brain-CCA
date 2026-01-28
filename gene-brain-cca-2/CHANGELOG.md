@@ -4,6 +4,44 @@ All notable changes to the gene-brain-cca-2 pipeline will be documented in this 
 
 ---
 
+## [2.0.0] - 2026-01-28
+
+### Added - Phase 3: Multi-FM Stratified Analysis
+
+**New Experiments:**
+- Multi-FM stratified CCA benchmark (HyenaDNA, Caduceus, DNABERT2, Evo2)
+- 4 brain modalities: Schaefer7 FC, Schaefer17 FC, sMRI tabular (540 features), dMRI tabular (675 features)
+- MDD vs Control coupling comparison with permutation testing (1000 perms)
+- sMRI/dMRI → MDD direct prediction pipeline
+
+**New Results in `derived/stratified_fm/`:**
+- Stratified comparison JSONs for each FM × modality combination
+- Permutation test results with p-values
+- Weight cosine similarity analysis
+
+**New Results in `derived/wide_gene/`:**
+- `predictive_suite_results_smri_tabular.json` - sMRI → MDD prediction (AUC 0.561)
+- `predictive_suite_results_dmri_tabular.json` - dMRI → MDD prediction (AUC 0.553)
+
+**Script Updates:**
+- `run_predictive_suite.py`: Added `--cov-extra` for eTIV residualization in sMRI
+
+**Key Findings:**
+| Analysis | Result | Interpretation |
+|----------|--------|----------------|
+| MDD vs Ctrl coupling | Δr ≈ 0 for all | No disease-specific gene-brain link |
+| sMRI → MDD | AUC = 0.561 | Near chance, macro-structure uninformative |
+| dMRI → MDD | AUC = 0.553 | Near chance, white matter uninformative |
+| FM model comparison | All similar | No FM shows unique coupling pattern |
+
+**Completion Status (16 total experiments):**
+- HyenaDNA: 4/4 complete ✅
+- Caduceus: 4/4 complete ✅
+- DNABERT2: 4/4 complete ✅
+- Evo2: 1/4 complete (dMRI), 3 in progress ⏳
+
+---
+
 ## [1.1.0] - 2026-01-14
 
 ### Added - Results Documentation

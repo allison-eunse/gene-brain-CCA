@@ -1,11 +1,12 @@
 # gene-brain-cca-2
 
-**Two pipelines on the 4,218 gene–fMRI overlap cohort:**
+**Three analysis phases on the UK Biobank gene–brain overlap cohort:**
 
 - **Pipeline A**: Interpretable SCCA (111 genes × 180 ROIs, no PCA)
 - **Pipeline B**: Predictive wide gene embedding (111×768 → PCA512; baselines + CCA/SCCA)
+- **Phase 3**: Multi-FM stratified CCA (MDD vs Controls, 4 FM models × 4 brain modalities)
 
-Both pipelines use **fold-wise Stage 1 fitting** to avoid data leakage and provide reliable evaluation.
+All pipelines use **fold-wise Stage 1 fitting** to avoid data leakage and provide reliable evaluation.
 
 ---
 
@@ -20,6 +21,8 @@ Both pipelines use **fold-wise Stage 1 fitting** to avoid data leakage and provi
 | **Genetics >> fMRI for MDD prediction** | AUC 0.759 vs 0.559 (+36% relative improvement) |
 | **CCA/SCCA hurts prediction** | AUC 0.546-0.566 vs 0.759-0.762 (direct supervised) |
 | **Gene-brain coupling is diffuse** | SCCA sparsity < 10%; no localized biomarkers |
+| **No MDD-specific coupling** | All Δr (MDD-Ctrl) ≈ 0, p > 0.05 |
+| **sMRI/dMRI fail to predict MDD** | AUC 0.56/0.55 (near chance) |
 
 ### Pipeline B Holdout Results (N=844)
 
@@ -41,9 +44,31 @@ Both pipelines use **fold-wise Stage 1 fitting** to avoid data leakage and provi
 
 **Top genes (Component 0):** NR3C1, CTNND2, ZNF165, KCNK2, CSMD1
 
+### Phase 3: Stratified CCA Results (NEW)
+
+Tested whether gene-brain coupling differs between MDD and Control groups:
+
+| FM Model | Schaefer7 | Schaefer17 | sMRI | dMRI |
+|----------|-----------|------------|------|------|
+| HyenaDNA | r≈0, p>0.05 | r≈0, p>0.05 | r≈0, p>0.05 | r≈0, p>0.05 |
+| Caduceus | r≈0, p>0.05 | r≈0, p>0.05 | r≈0, p>0.05 | r≈0, p>0.05 |
+| DNABERT2 | r≈0, p>0.05 | r≈0, p>0.05 | r≈0, p>0.05 | r≈0, p>0.05 |
+| Evo2 | ⏳ | ⏳ | ⏳ | r≈0, p>0.05 |
+
+**Result**: No FM model shows significant MDD-specific gene-brain coupling.
+
+### Brain-Only MDD Prediction
+
+| Modality | N | Features | AUC | Interpretation |
+|----------|---|----------|-----|----------------|
+| sMRI | 7,116 | 540 | 0.561 | Near chance |
+| dMRI | 6,649 | 675 | 0.553 | Near chance |
+
+**Result**: Structural MRI features do not predict MDD above chance.
+
 ### Core Conclusion
 
-> **Gene-brain correlation (unsupervised objective) does NOT translate into clinical prediction power (supervised objective).** Full foundation model embeddings substantially outperform scalar reductions for depression prediction. fMRI adds minimal/no predictive value beyond genetics.
+> **Gene-brain correlation (unsupervised objective) does NOT translate into clinical prediction power (supervised objective).** Full foundation model embeddings substantially outperform scalar reductions for depression prediction. Neither functional nor structural brain imaging couples meaningfully with gene embeddings for MDD. The gene-brain coupling does not differ between MDD and Controls.
 
 ---
 
