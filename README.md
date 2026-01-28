@@ -490,13 +490,23 @@ See detailed troubleshooting in:
 
 ## Future Directions
 
-Based on current results, recommended next steps:
+### Completed (Phase 3)
+- ✅ **Multi-FM comparison** - HyenaDNA, Caduceus, DNABERT2, Evo2 (13/16 complete)
+- ✅ **Network-level fMRI** - Schaefer7 and Schaefer17 parcellations tested
+- ✅ **sMRI/dMRI prediction** - Both fail to predict MDD (AUC ~0.55)
+- ✅ **MDD vs Control stratification** - No disease-specific coupling found
 
-1. **Test Yoon's 38-gene panel** - Filter to curated MDD genes for higher signal-to-noise
-2. **Remove PCA bottleneck** - Use LASSO/ElasticNet on full 85K features
-3. **Try Schaefer 400 parcellation** - Network-specific features (DMN, Salience)
-4. **Explore fMRI foundation models** - BrainLM or similar learned representations
-5. **Implement 10-fold nested CV** - Match Yoon et al. evaluation methodology
+### Remaining Next Steps
+
+1. **Complete the Grid** - Finish remaining Evo2 jobs (Schaefer7, Schaefer17, sMRI) to rigorously confirm the null landscape
+
+2. **Non-Linearity** - Move beyond SCCA to Deep CCA (DCCA) or Kernel CCA. If the gene-brain relationship is non-linear, linear CCA/SCCA will not find it.
+
+3. **Intermediate Phenotypes** - Integrate proteomics or cellular features to bridge the gap between DNA sequence and brain scan. The gene → brain pathway may require intermediate molecular layers.
+
+4. **Test Yoon's 38-gene panel** - Filter to curated MDD genes for higher signal-to-noise
+
+5. **Explore fMRI foundation models** - BrainLM or similar learned representations for brain imaging
 
 ---
 
