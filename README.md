@@ -56,7 +56,47 @@ Tested 4 genomic foundation models × 4 brain modalities for MDD-specific coupli
 
 This pipeline implements a rigorous framework for linking genetic embeddings (from foundation models like DNABERT2) to brain imaging features (fMRI functional connectivity), with downstream clinical prediction.
 
-### Two-Stage Architecture
+### Current Pipeline: Stratified Multi-Model SCCA (Phase 4)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    THE MASTER PIPELINE: Evolution to Stratified SCCA            │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  INPUTS                           PROCESSING                    VALIDATION      │
+│  ──────                           ──────────                    ──────────      │
+│                                                                                 │
+│  ┌─────────────┐                  ┌─────────────────┐                           │
+│  │ FM Models   │                  │ Stratified SCCA │     ┌──────────────────┐ │
+│  │ ─────────── │                  │                 │     │ Per cell:        │ │
+│  │ • DNABERT2  │──┐               │  ┌───────────┐  │     │ • Holdout r      │ │
+│  │ • Evo2      │  │               │  │ MDD Cohort│  │     │ • Perm test      │ │
+│  │ • HyenaDNA  │  │               │  │ (N~1,700) │  │     │   (1000 perms)   │ │
+│  │ • Caduceus  │  │               │  └───────────┘  │     │ • Weight cosine  │ │
+│  └─────────────┘  │               │                 │     └──────────────────┘ │
+│                   ├──────────────>│  ┌───────────┐  │──────────────────────────>│
+│  ┌─────────────┐  │               │  │ Ctrl Cohort│ │                           │
+│  │ Brain Mods  │  │               │  │ (N~1,700) │  │     4 FM × 4 modalities  │
+│  │ ─────────── │──┘               │  └───────────┘  │     = 16 experiments     │
+│  │ • Schaefer7 │                  │                 │                           │
+│  │ • Schaefer17│                  │ Leakage-safe:   │     Status: 13/16 ✅      │
+│  │ • sMRI      │                  │ residualize on  │     Evo2: 1/4 complete    │
+│  │ • dMRI      │                  │ train folds only│                           │
+│  └─────────────┘                  └─────────────────┘                           │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Sample Sizes by Modality:**
+
+| Modality | Total N | MDD | Control | Source |
+|----------|---------|-----|---------|--------|
+| Schaefer-7/17 | 4,218 | 1,735 | 2,483 | fMRI FC networks |
+| sMRI tabular | 7,116 | 3,034 | 4,082 | 540 structural features |
+| dMRI tabular | 6,649 | 2,845 | 3,804 | 675 diffusion features |
+| Gene embeddings | 28,932 | — | — | All FM models |
+
+### Two-Stage Architecture (Original)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
